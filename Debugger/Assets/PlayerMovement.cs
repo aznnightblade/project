@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	[SerializeField]
 	float ShootDelay = 0.25f;
+	[SerializeField]
+	float ReductionPerAgility = 0.005f;
 	bool bulletFired = false;
 	float fireTimer = 0.0f;
 	
@@ -26,7 +28,7 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButton ("Fire1") && fireTimer <= 0.0f) {
-			fireTimer = ShootDelay;
+			fireTimer = ShootDelay - (ReductionPerAgility * gameObject.GetComponent<PlayerStatistics>().Agility);
 			bulletFired = true;
 		}
 
@@ -56,10 +58,40 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FireBullet(){
+		Vector3 pos = transform.position;
+		Vector3 offset = transform.rotation.eulerAngles;
 		Vector3 rot = transform.rotation.eulerAngles;					// Creates a rotation Quaternion based on the players rotation.
 		rot.x = 90;
 
-		Instantiate (bullet, transform.localPosition, Quaternion.Euler(rot));		// Creates a new bullet.
+		if (gameObject.GetComponent<PlayerStatistics> ().NumThreads > 1) {
+			offset.y = offset.y * (Mathf.PI / 180);
+			offset = new Vector3(-Mathf.Cos(offset.y), 0, Mathf.Sin(offset.y));
+			offset *= 0.05f;
+		}
+
+		switch (gameObject.GetComponent<PlayerStatistics> ().NumThreads) {
+		case 1:
+			Instantiate (bullet, pos, Quaternion.Euler (rot));		// Creates a new bullet.
+			break;
+		case 2:
+			Instantiate (bullet, pos - offset, Quaternion.Euler (rot));		// Creates a new bullet.
+			Instantiate (bullet, pos + offset, Quaternion.Euler (rot));		// Creates a new bullet.
+			break;
+		case 3:
+			Instantiate (bullet, pos - offset, Quaternion.Euler (rot.x, rot.y + 10, rot.z));		// Creates a new bullet.
+			Instantiate (bullet, pos, Quaternion.Euler (rot));										// Creates a new bullet.
+			Instantiate (bullet, pos + offset, Quaternion.Euler (rot.x, rot.y - 10, rot.z));		// Creates a new bullet.
+			break;
+		case 4:
+			Instantiate (bullet, pos - (2 * offset), Quaternion.Euler (rot.x, rot.y + 10, rot.z));		// Creates a new bullet.
+			Instantiate (bullet, pos - offset, Quaternion.Euler (rot));									// Creates a new bullet.
+			Instantiate (bullet, pos + offset, Quaternion.Euler (rot));		// Creates a new bullet.
+			Instantiate (bullet, pos + (2 * offset), Quaternion.Euler (rot.x, rot.y - 10, rot.z));		// Creates a new bullet.
+			break;
+		default:
+			Instantiate (bullet, transform.localPosition, Quaternion.Euler (rot));		// Creates a new bullet.
+			break;
+		}
 
 		bulletFired = false;
 	}

@@ -12,6 +12,9 @@ public class BulletScript : MonoBehaviour {
 	float InitialTravelDistance = 100.0f;
 
 	[SerializeField]
+	float IncreasedDistancePerDex = 0.250f;
+
+	[SerializeField]
 	float Distance = 0.0f;
 	Vector3 StartLocation;
 
@@ -22,7 +25,7 @@ public class BulletScript : MonoBehaviour {
 	void Start () {
 		owner = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics>();
 		StartLocation = transform.position;
-		Distance = InitialTravelDistance + (owner.Dexterity * 0.250f);
+		Distance = InitialTravelDistance + (owner.Dexterity * IncreasedDistancePerDex);
 
 		float degrees = transform.rotation.eulerAngles.y + 90.0f;
 		float radians = degrees * (Mathf.PI / 180.0f);
