@@ -7,19 +7,14 @@ public class BulletScript : MonoBehaviour {
 
 	[SerializeField]
 	float Speed = 1.0f;
-
-	[SerializeField]
-	float InitialTravelDistance = 100.0f;
-
-	[SerializeField]
-	float IncreasedDistancePerDex = 0.250f;
-
-	[SerializeField]
+	Vector3 direction;
 	float Distance = 0.0f;
 	Vector3 StartLocation;
 
 	[SerializeField]
-	Vector3 direction;
+	float InitialTravelDistance = 100.0f;
+	[SerializeField]
+	float IncreasedDistancePerDex = 0.250f;
 
 	// Use this for initialization
 	void Start () {

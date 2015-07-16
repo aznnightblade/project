@@ -4,7 +4,7 @@ using System.Collections;
 public class FollowPlayer : MonoBehaviour {
 
 	[SerializeField]
-	Transform target;
+	Transform target = null;
 
 	[SerializeField]
 	float distance = 10;

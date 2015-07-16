@@ -4,10 +4,10 @@ using System.Collections;
 public class GoToTeleporter : MonoBehaviour {
 
 	[SerializeField]
-	Transform teleporter;
+	Transform teleporter = null;
 
 	[SerializeField]
-	Transform teleportLocation;
+	Transform teleportLocation = null;
 
 	// Use this for initialization
 	void Start () {
