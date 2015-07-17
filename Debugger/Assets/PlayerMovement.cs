@@ -7,9 +7,12 @@ public class PlayerMovement : MonoBehaviour {
 	PlayerStatistics player;
 	[SerializeField]
 	Transform bullet = null;
+	[SerializeField]
+	Transform breakpoint = null;
 
 	[SerializeField]
 	float Speed = 5;
+	float freezeTimer = 0.0f;
 
 	[SerializeField]
 	float ShootDelay = 0.25f;
@@ -23,14 +26,15 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField]
 	float ChargeDelay = 0.25f;
 	float ChargeTimer = 0.0f;
-
 	float ChargeScale = 1.0f;
+
+	bool breakpointFired = false;
+	float breakpointCooldown = 0.0f;
 	
 	// Use this for initialization
 	void Start () {
 		gameObject.GetComponent<Renderer>().material.color = Color.red;
 		bullet.tag = "Player Bullet";										// Tags bullets created by player as a player bullet.
-		//bullet.GetComponent<BulletScript> ().Owner = gameObject;
 	}
 	
 	// Update is called once per frame
@@ -52,31 +56,44 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		}
 
+		if (Input.GetButton ("Breakpoint") && breakpointCooldown <= 0.0f) {
+			breakpointFired = true;
+			breakpointCooldown = breakpoint.GetComponent<BreakpointScript>().ShotDelay;
+		}
+
 		fireTimer -= Time.deltaTime;
 		ChargeTimer -= Time.deltaTime;
+		FreezeTimer -= Time.deltaTime;
+		breakpointCooldown -= Time.deltaTime;
 	}
 
 	void FixedUpdate (){
 		Vector3 pos = transform.localPosition;
 
-		// Creates a ray based off of the mouses current position on the screen.
-		// The ray is used to create a vector to then have the player look towards that point.
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-		Physics.Raycast (ray, out hit);
-		Vector3 target = hit.point;
-		target.y = transform.localPosition.y; // Keeps the same depth as the player. Y is depth since we are looking down and working on an x/z plane.
-		transform.LookAt (target);
+		if (FreezeTimer <= 0.0f) {
+			// Creates a ray based off of the mouses current position on the screen.
+			// The ray is used to create a vector to then have the player look towards that point.
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit hit;
+			Physics.Raycast (ray, out hit);
+			Vector3 target = hit.point;
+			target.y = transform.localPosition.y; // Keeps the same depth as the player. Y is depth since we are looking down and working on an x/z plane.
+			transform.LookAt (target);
 
-		// Moves player based on input
-		pos.x = pos.x + Input.GetAxisRaw ("Horizontal") * Speed * Time.deltaTime;
-		pos.z = pos.z + Input.GetAxisRaw ("Vertical") * Speed * Time.deltaTime;
+			// Moves player based on input
+			pos.x = pos.x + Input.GetAxisRaw ("Horizontal") * Speed * Time.deltaTime;
+			pos.z = pos.z + Input.GetAxisRaw ("Vertical") * Speed * Time.deltaTime;
 
-		transform.localPosition = pos;
+			transform.localPosition = pos;
 
-		// Checks to see if we queued up a bullet to be fired
-		if (bulletFired == true)
-			FireBullet ();
+			// Checks to see if we queued up a bullet to be fired
+			if (bulletFired == true)
+				FireBullet ();
+
+			// Checks to see if we queued up a breakpoint to be fired
+			if (breakpointFired == true)
+				FireBreakpoint();
+		}
 	}
 
 	void FireBullet(){
@@ -87,7 +104,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		// Resets our bullet size if we had scaled it up from a charge shot.
 		if (bullet.transform.localScale.magnitude > 0.13f)
-			bullet.transform.localScale = new Vector3 (0.2f, 0.3f, 0.0f);
+			bullet.transform.localScale = new Vector3 (0.05f, 0.05f, 0.0f);
 
 		// Checks to see if we had charged up a shot
 		if (ChargeScale > 1) {
@@ -129,5 +146,20 @@ public class PlayerMovement : MonoBehaviour {
 
 		// Resets so we can fire again.
 		bulletFired = false;
+	}
+
+	void FireBreakpoint() {
+		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		pos.y = gameObject.transform.position.y;
+
+
+
+		Instantiate (breakpoint, pos, Quaternion.identity);
+		breakpointFired = false;
+	}
+
+	public float FreezeTimer{
+		get { return freezeTimer; }
+		set { freezeTimer = value; }
 	}
 }
