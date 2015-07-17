@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour {
 	float ShootDelay = 0.25f;
 	[SerializeField]
 	float ReductionPerAgility = 0.005f;
+	[SerializeField]
+	float ReductionPerIntelligence = 0.075f;
 	bool bulletFired = false;
 	float fireTimer = 0.0f;
 
@@ -34,6 +36,8 @@ public class PlayerMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameObject.GetComponent<Renderer>().material.color = Color.red;
+		gameObject.GetComponent<Rigidbody> ().maxAngularVelocity = Speed;
+		player = gameObject.GetComponent<PlayerStatistics> ();
 		bullet.tag = "Player Bullet";										// Tags bullets created by player as a player bullet.
 	}
 	
@@ -41,7 +45,7 @@ public class PlayerMovement : MonoBehaviour {
 	void Update () {
 		// Checks to see if either the fire button has been pressed or the charge button was relased to fire a bullet
 		if ((Input.GetButton ("Fire1") || Input.GetButtonUp("Fire2")) && fireTimer <= 0.0f) {
-			fireTimer = ShootDelay - (ReductionPerAgility * gameObject.GetComponent<PlayerStatistics>().Agility);
+			fireTimer = ShootDelay - (ReductionPerAgility * player.Agility);
 			bulletFired = true;
 		}
 
@@ -49,7 +53,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetButton("Fire2") && ChargeTimer <= 0.0f && !Input.GetButton("Fire1")) {
 			if(ChargeScale < 2.0f) {
 				ChargeScale += ChargeSpeed;
-				ChargeTimer = ChargeDelay - (ReductionPerAgility * gameObject.GetComponent<PlayerStatistics>().Agility);
+				ChargeTimer = ChargeDelay - (ReductionPerAgility * player.Agility);
 
 				if(ChargeScale > 2.0f)
 					ChargeScale = 2.0f;
@@ -58,7 +62,7 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (Input.GetButton ("Breakpoint") && breakpointCooldown <= 0.0f) {
 			breakpointFired = true;
-			breakpointCooldown = breakpoint.GetComponent<BreakpointScript>().ShotDelay;
+			breakpointCooldown = breakpoint.GetComponent<BreakpointScript>().ShotDelay - (player.Intelligence * ReductionPerIntelligence);
 		}
 
 		fireTimer -= Time.deltaTime;
@@ -68,7 +72,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate (){
-		Vector3 pos = transform.localPosition;
+		Vector3 pos = transform.position;
 
 		if (FreezeTimer <= 0.0f) {
 			// Creates a ray based off of the mouses current position on the screen.
@@ -84,7 +88,9 @@ public class PlayerMovement : MonoBehaviour {
 			pos.x = pos.x + Input.GetAxisRaw ("Horizontal") * Speed * Time.deltaTime;
 			pos.z = pos.z + Input.GetAxisRaw ("Vertical") * Speed * Time.deltaTime;
 
-			transform.localPosition = pos;
+			if(gameObject.GetComponent<Rigidbody>().angularVelocity.magnitude > 0){
+				transform.Translate (Vector3.zero);
+			}
 
 			// Checks to see if we queued up a bullet to be fired
 			if (bulletFired == true)
@@ -93,6 +99,8 @@ public class PlayerMovement : MonoBehaviour {
 			// Checks to see if we queued up a breakpoint to be fired
 			if (breakpointFired == true)
 				FireBreakpoint();
+
+			transform.position = pos;
 		}
 	}
 
@@ -151,8 +159,6 @@ public class PlayerMovement : MonoBehaviour {
 	void FireBreakpoint() {
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.y = gameObject.transform.position.y;
-
-
 
 		Instantiate (breakpoint, pos, Quaternion.identity);
 		breakpointFired = false;
