@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField]
 	PlayerStatistics player;
 	[SerializeField]
+	Transform fireLocation = null;
+	[SerializeField]
 	Transform bullet = null;
 	[SerializeField]
 	Transform breakpoint = null;
@@ -87,10 +89,9 @@ public class PlayerMovement : MonoBehaviour {
 			// Moves player based on input
 			pos.x = pos.x + Input.GetAxisRaw ("Horizontal") * Speed * Time.deltaTime;
 			pos.z = pos.z + Input.GetAxisRaw ("Vertical") * Speed * Time.deltaTime;
-
-			if(gameObject.GetComponent<Rigidbody>().angularVelocity.magnitude > 0){
-				transform.Translate (Vector3.zero);
-			}
+			
+			transform.Translate (Vector3.zero);
+			transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
 			// Checks to see if we queued up a bullet to be fired
 			if (bulletFired == true)
@@ -105,7 +106,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FireBullet(){
-		Vector3 pos = transform.position;
+		Vector3 pos = fireLocation.position;
 		Vector3 offset = transform.rotation.eulerAngles;				// Gets back our current rotation as a vector
 		Vector3 rot = transform.rotation.eulerAngles;					// Creates a rotation Quaternion based on the players rotation.
 		rot.x = 90;														// Keeps the bullet rotated on the x axis properly
@@ -142,10 +143,10 @@ public class PlayerMovement : MonoBehaviour {
 			Instantiate (bullet, pos + offset, Quaternion.Euler (rot.x, rot.y - 10, rot.z));	
 			break;
 		case 4:
-			Instantiate (bullet, pos - (2 * offset), Quaternion.Euler (rot.x, rot.y + 10, rot.z));		
-			Instantiate (bullet, pos - offset, Quaternion.Euler (rot));								
-			Instantiate (bullet, pos + offset, Quaternion.Euler (rot));	
-			Instantiate (bullet, pos + (2 * offset), Quaternion.Euler (rot.x, rot.y - 10, rot.z));		
+			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 7, rot.z));		
+			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 2.5f, rot.z));								
+			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 2.5f, rot.z));	
+			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 7, rot.z));		
 			break;
 		default:
 			Instantiate (bullet, transform.localPosition, Quaternion.Euler (rot));
