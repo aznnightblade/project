@@ -20,6 +20,9 @@ public class PlayerStatistics : MonoBehaviour {
 	[SerializeField]
 	int numThreads = 1;
 
+	[SerializeField]
+	int money = 0;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -38,4 +41,8 @@ public class PlayerStatistics : MonoBehaviour {
 	public int Endurance { get { return endurance; } }
 	public int Luck { get { return luck; } }
 	public int NumThreads { get { return numThreads; } }
+	public int Money {
+		get { return money; }
+		set { money = value; }
+	}
 }
