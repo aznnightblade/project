@@ -19,7 +19,6 @@ public class BulletScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		owner = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics>();
-		gameObject.GetComponent<Renderer> ().material.color = Color.yellow;
 		StartLocation = transform.position;
 		Distance = InitialTravelDistance + (owner.Dexterity * IncreasedDistancePerDex);
 
@@ -40,4 +39,6 @@ public class BulletScript : MonoBehaviour {
 		if (Vector3.Distance(pos, StartLocation) >= Distance)
 			Destroy (gameObject);
 	}
+
+	public PlayerStatistics Owner { get { return owner; } }
 }
