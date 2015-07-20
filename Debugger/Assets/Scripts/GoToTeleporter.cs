@@ -38,9 +38,9 @@ public class GoToTeleporter : MonoBehaviour {
 		    (dampener2 == null || dampener2.GetComponent<DampenerScript>().Destroyed == true)) {
 			if (col.gameObject.tag == "Player") {
 				Vector3 teleportTo = teleportLocation.transform.position;
-				teleportTo.y = col.gameObject.transform.localPosition.y;
+				teleportTo.y = col.gameObject.transform.position.y;//col.gameObject.transform.position.y;
 
-				col.gameObject.transform.localPosition = teleportTo;
+				col.gameObject.transform.position = teleportTo;
 			}
 		}
 	}
