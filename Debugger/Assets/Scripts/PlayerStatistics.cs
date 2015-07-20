@@ -18,20 +18,58 @@ public class PlayerStatistics : MonoBehaviour {
 	int luck = 1;
 
 	[SerializeField]
-	int numThreads = 1;
+	int health = 0;
+	[SerializeField]
+	int maxHealth = 0;
+	[SerializeField]
+	int initialHealth = 10;
+	[SerializeField]
+	int healthPerEndurance = 10;
+	[SerializeField]
+	int damage = 0;
+	[SerializeField]
+	float chargedDamageScale = 1.5f;
+	[SerializeField]
+	int initialDamage = 5;
+	[SerializeField]
+	int damagePerStrength = 3;
+	[SerializeField]
+	int defense = 0;
+	[SerializeField]
+	int initialDefense = 1;
+	[SerializeField]
+	int defensePerEndurance = 1;
+	[SerializeField]
+	int critChance = 0;
+	[SerializeField]
+	int initialCrit = 5;
+	[SerializeField]
+	int critPerLuck = 5;
 
+	[SerializeField]
+	int numThreads = 1;
 
 	[SerializeField]
 	int money = 0;
+	[SerializeField]
+	int experience = 0;
 
 	// Use this for initialization
 	void Start () {
-	
+		StatsUpdate ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	// Call this once a stat has been increased to recalculate the players values
+	public void StatsUpdate(){
+		maxHealth = health = initialHealth + healthPerEndurance * endurance;
+		defense = initialDefense + defensePerEndurance * endurance;
+		damage = initialDamage + damagePerStrength * strength;
+		critChance = initialCrit + critPerLuck * luck;
 	}
 
 	// Accessors
@@ -46,4 +84,11 @@ public class PlayerStatistics : MonoBehaviour {
 		get { return money; }
 		set { money = value; }
 	}
+	public int Experience {
+		get { return experience; }
+		set { experience = value; }
+	}
+	public int Damage { get { return damage; } }
+	public float ChargedDamageScale { get { return chargedDamageScale; } }
+	public int Defense { get { return defense; } }
 }

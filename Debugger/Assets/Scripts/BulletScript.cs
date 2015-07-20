@@ -39,4 +39,6 @@ public class BulletScript : MonoBehaviour {
 		if (Vector3.Distance(pos, StartLocation) >= Distance)
 			Destroy (gameObject);
 	}
+
+	public PlayerStatistics Owner { get { return owner; } }
 }

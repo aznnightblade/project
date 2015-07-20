@@ -77,20 +77,17 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 pos = transform.position;
 
 		if (FreezeTimer <= 0.0f) {
-			// Creates a ray based off of the mouses current position on the screen.
-			// The ray is used to create a vector to then have the player look towards that point.
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit hit;
-			Physics.Raycast (ray, out hit);
-			Vector3 target = hit.point;
-			target.y = transform.localPosition.y; // Keeps the same depth as the player. Y is depth since we are looking down and working on an x/z plane.
-			transform.LookAt (target);
+			// Creates a direction vector and then transforms it into a degrees rotation.
+			Vector3 target = Camera.main.WorldToScreenPoint(transform.position) - Input.mousePosition;
+			target.Normalize();
+			float rotation = (Mathf.Atan2(-target.y, target.x) * 180 / Mathf.PI) - 90;		// Need to remove 90 from the angle since Unity's forward
+			transform.rotation = Quaternion.Euler(new Vector3(0, rotation, 0));				// facing is 0 degrees
 
 			// Moves player based on input
 			pos.x = pos.x + Input.GetAxisRaw ("Horizontal") * Speed * Time.deltaTime;
 			pos.z = pos.z + Input.GetAxisRaw ("Vertical") * Speed * Time.deltaTime;
-			
-			transform.Translate (Vector3.zero);
+
+			// Attempts to keep the player from getting moved around after a collision.
 			transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
 			// Checks to see if we queued up a bullet to be fired
@@ -112,8 +109,8 @@ public class PlayerMovement : MonoBehaviour {
 		rot.x = 90;														// Keeps the bullet rotated on the x axis properly
 
 		// Resets our bullet size if we had scaled it up from a charge shot.
-		if (bullet.transform.localScale.magnitude > 0.13f)
-			bullet.transform.localScale = new Vector3 (0.05f, 0.05f, 0.0f);
+		if (bullet.transform.localScale.magnitude > 0.08f)
+			bullet.transform.localScale = new Vector3 (0.2f, 0.2f, 0.0f);
 
 		// Checks to see if we had charged up a shot
 		if (ChargeScale > 1) {

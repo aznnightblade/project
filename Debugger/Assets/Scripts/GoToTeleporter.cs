@@ -9,9 +9,22 @@ public class GoToTeleporter : MonoBehaviour {
 	[SerializeField]
 	Transform teleportLocation = null;
 
+	[SerializeField]
+	GameObject dampener1 = null;
+	[SerializeField]
+	GameObject dampener2 = null;
+
 	// Use this for initialization
 	void Start () {
-		gameObject.GetComponent<Renderer>().material.color = Color.green;
+
+	}
+
+	void Update() {
+		if ((dampener1 == null || dampener1.GetComponent<DampenerScript>().Destroyed == true) &&
+		    (dampener2 == null || dampener2.GetComponent<DampenerScript>().Destroyed == true))
+			gameObject.GetComponent<Renderer> ().material.color = Color.green;
+		else
+			gameObject.GetComponent<Renderer> ().material.color = Color.red;
 	}
 	
 	void OnDrawGizmos (){
@@ -21,11 +34,14 @@ public class GoToTeleporter : MonoBehaviour {
 
 	void OnTriggerEnter (Collider col)
 	{
-		if (col.gameObject.tag == "Player") {
-			Vector3 teleportTo = teleportLocation.transform.position;
-			teleportTo.y = col.gameObject.transform.localPosition.y;
+		if ((dampener1 == null || dampener1.GetComponent<DampenerScript>().Destroyed == true) &&
+		    (dampener2 == null || dampener2.GetComponent<DampenerScript>().Destroyed == true)) {
+			if (col.gameObject.tag == "Player") {
+				Vector3 teleportTo = teleportLocation.transform.position;
+				teleportTo.y = col.gameObject.transform.localPosition.y;
 
-			col.gameObject.transform.localPosition = teleportTo;
+				col.gameObject.transform.localPosition = teleportTo;
+			}
 		}
 	}
 }
