@@ -55,8 +55,13 @@ public class EnemyBehavior : MonoBehaviour {
 		Vector3 pos = transform.position;
 		Vector3 targetPoint = target.position;
 
+		Vector3 toTarget = targetPoint - pos;
+		toTarget.Normalize();
+		float rotation = (Mathf.Atan2(-toTarget.y, toTarget.x) * 180 / Mathf.PI) - 90;
+		transform.rotation = Quaternion.Euler(new Vector3(0, rotation, 0));
+
 		if (!Ranged || (Ranged && Vector3.Distance (targetPoint, pos) > 2.0f)) {
-			Vector3 distance = target.position - pos;
+			Vector3 distance = targetPoint - pos;
 			distance.Normalize ();
 
 			pos.x = pos.x + distance.x * Speed * Time.deltaTime;

@@ -125,31 +125,31 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		// Creates bullets based on how many threads a player has
-		GameObject newBullet, newBullet2, newBullet3, newBullet4;
+		Transform newBullet, newBullet2, newBullet3, newBullet4;
 		switch (gameObject.GetComponent<PlayerStatistics> ().NumThreads) {
 		case 1:
-			newBullet = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot));		
+			newBullet = Instantiate (bullet, pos, Quaternion.Euler (rot)) as Transform;		
 			break;
 		case 2:
-			newBullet = (GameObject)Instantiate (bullet, pos - offset, Quaternion.Euler (rot));
-			newBullet2 = (GameObject)Instantiate (bullet, pos + offset, Quaternion.Euler (rot));
+			newBullet = Instantiate (bullet, pos - offset, Quaternion.Euler (rot)) as Transform;
+			newBullet2 = Instantiate (bullet, pos + offset, Quaternion.Euler (rot)) as Transform;
 			newBullet2.tag = "Player Bullet";
 			break;
 		case 3:
-			newBullet = (GameObject)Instantiate (bullet, pos - offset, Quaternion.Euler (rot.x, rot.y + 10, rot.z));		
-			newBullet2 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot));									
-			newBullet3 = (GameObject)Instantiate (bullet, pos + offset, Quaternion.Euler (rot.x, rot.y - 10, rot.z));	
+			newBullet = Instantiate (bullet, pos - offset, Quaternion.Euler (rot.x, rot.y + 10, rot.z)) as Transform;		
+			newBullet2 = Instantiate (bullet, pos, Quaternion.Euler (rot)) as Transform;									
+			newBullet3 = Instantiate (bullet, pos + offset, Quaternion.Euler (rot.x, rot.y - 10, rot.z)) as Transform;	
 			newBullet2.tag = newBullet3.tag = "Player Bullet";
 			break;
 		case 4:
-			newBullet = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 7, rot.z));		
-			newBullet2 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 2.5f, rot.z));								
-			newBullet3 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 2.5f, rot.z));	
-			newBullet4 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 7, rot.z));	
+			newBullet = Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 7, rot.z)) as Transform;		
+			newBullet2 = Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 2.5f, rot.z)) as Transform;								
+			newBullet3 = Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 2.5f, rot.z)) as Transform;	
+			newBullet4 = Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 7, rot.z)) as Transform;	
 			newBullet2.tag = newBullet3.tag = newBullet4.tag = "Player Bullet";
 			break;
 		default:
-			newBullet = (GameObject)Instantiate (bullet, transform.localPosition, Quaternion.Euler (rot));
+			newBullet = Instantiate (bullet, transform.localPosition, Quaternion.Euler (rot)) as Transform;
 			break;
 		}
 		newBullet.tag = "Player Bullet";
