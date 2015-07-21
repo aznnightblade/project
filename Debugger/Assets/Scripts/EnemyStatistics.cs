@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyStatistics : MonoBehaviour {
@@ -18,11 +18,18 @@ public class EnemyStatistics : MonoBehaviour {
 	int luck = 1;
 	[SerializeField]
 	int moneyDropped = 100;
-	//[SerializeField]
-	//int experienceWorth = 10;
+	[SerializeField]
+	int experienceWorth = 10;
+	[SerializeField]
+	int maxHealth = 0;
+	[SerializeField]
+	int currHealth = 0;
+	[SerializeField]
+	int damage = 0;
 
 	// Use this for initialization
 	void Start () {
+		maxHealth = currHealth = 10 * endurance;
 	
 	}
 	
@@ -39,5 +46,8 @@ public class EnemyStatistics : MonoBehaviour {
 	public int Endurance { get {return endurance;} }
 	public int Luck { get {return luck;} }
 	public int MoneyDropped { get {return moneyDropped;} }
+
+	public int Health { get { return currHealth; } 
+						set { currHealth = value; } }
 
 }
