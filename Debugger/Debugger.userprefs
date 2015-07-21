@@ -1,13 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyStatistics.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SpawnEnemies.cs">
     <Files>
-      <File FileName="Assets\Scripts\BossScript.cs" Line="73" Column="42" />
-      <File FileName="Assets\Scripts\PlayerMovement.cs" Line="83" Column="78" />
-      <File FileName="Assets\Scripts\EnemyBulletScript.cs" Line="44" Column="68" />
+      <File FileName="Assets\Scripts\BreakpointScript.cs" Line="41" Column="2" />
+      <File FileName="Assets\Scripts\BossScript.cs" Line="79" Column="1" />
+      <File FileName="Assets\Scripts\PlayerMovement.cs" Line="176" Column="1" />
+      <File FileName="Assets\Scripts\EnemyBulletScript.cs" Line="51" Column="1" />
       <File FileName="Assets\Scripts\PlayerStatistics.cs" Line="99" Column="1" />
-      <File FileName="Assets\Scripts\EnemyStatistics.cs" Line="40" Column="62" />
-      <File FileName="Assets\Scripts\BulletScript.cs" Line="46" Column="34" />
+      <File FileName="Assets\Scripts\EnemyStatistics.cs" Line="65" Column="1" />
+      <File FileName="Assets\Scripts\BulletScript.cs" Line="53" Column="1" />
+      <File FileName="Assets\Scripts\EnemyBehavior.cs" Line="107" Column="3" />
+      <File FileName="Assets\Scripts\SpawnEnemies.cs" Line="38" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
