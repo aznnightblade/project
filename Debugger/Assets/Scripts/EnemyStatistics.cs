@@ -29,7 +29,7 @@ public class EnemyStatistics : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		maxHealth = currHealth = 10 * endurance;
+		maxHealth = currHealth = 10 + 10 * endurance;
 	
 	}
 	
