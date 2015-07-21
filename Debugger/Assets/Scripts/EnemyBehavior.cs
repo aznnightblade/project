@@ -6,10 +6,15 @@ public class EnemyBehavior : MonoBehaviour {
 	[SerializeField]
 	EnemyStatistics enemy;
 	[SerializeField]
+	Transform bullet = null;
+	[SerializeField]
 	float Speed = 1.0f;
 	[SerializeField]
 	bool Ranged = false;
-
+	float fireTimer = 0.0f;
+	[SerializeField]
+	float shotDelay = 0.25f;
+	bool bulletFired = false;
 	Transform target = null;
 
 
@@ -24,15 +29,33 @@ public class EnemyBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (enemy.Health == 0)
+		if (enemy.Health <= 0) {
+			PlayerStatistics player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics>();
+			//player.Money += enemy.MoneyDropped;
+			player.Experience += enemy.ExperienceWorth;
 			Destroy (gameObject);
+		}
+
+		// Do this for ranged enemies only
+		if (Ranged) {
+			Vector3 pos = transform.position;
+			Vector3 targetPoint = target.position;
+			if(fireTimer <= 0.0f && Vector3.Distance(targetPoint, pos) <= 50.0f) {
+				fireTimer = shotDelay - (0.005f * enemy.Agility);
+				bulletFired = true;
+			}
+		}
+
+		fireTimer -= Time.deltaTime;
 	}
 
 	void FixedUpdate() {
 
-			// Draw a vector from enemy to player and move in that direction
-			Vector3 pos = transform.position;
-			Vector3 targetPoint = target.position;
+		// Draw a vector from enemy to player and move in that direction
+		Vector3 pos = transform.position;
+		Vector3 targetPoint = target.position;
+
+		if (!Ranged || (Ranged && Vector3.Distance (targetPoint, pos) > 2.0f)) {
 			Vector3 distance = target.position - pos;
 			distance.Normalize ();
 
@@ -40,13 +63,33 @@ public class EnemyBehavior : MonoBehaviour {
 			pos.z = pos.z + distance.z * Speed * Time.deltaTime;
 
 			transform.position = pos;
+		}
 
-
+		if (bulletFired && Vector3.Distance (targetPoint, pos) <= 2.0f) {
+			FireBullet();
+		}
 	}
 
 	void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Player" && gameObject.name == "Enemy") {
 			// Player takes damage
+			PlayerStatistics player = other.gameObject.GetComponent<PlayerStatistics>();
+			int totalDamage = enemy.Damage - player.Defense;
+			player.Health -= totalDamage;
 		}
+	}
+
+	void FireBullet() {
+		Vector3 pos = transform.position;
+		Vector3 rot = transform.rotation.eulerAngles;
+		rot.x = 90;
+
+		Transform newBullet = Instantiate (bullet, pos, Quaternion.Euler (rot)) as Transform;
+		GameObject bul = newBullet.gameObject;
+		bul.GetComponent<EnemyBulletScript> ().Owner = enemy;
+		newBullet.tag = "Enemy Bullet";
+		//newBullet.GetComponentInChildren<SpriteRenderer> ().color = Color.red;
+
+		bulletFired = false;
 	}
 }

@@ -6,7 +6,7 @@ public class BulletScript : MonoBehaviour {
 	PlayerStatistics owner;
 
 	[SerializeField]
-	float Speed = 1.0f;
+	float Speed = 8.0f;
 	Vector3 direction;
 	float Distance = 0.0f;
 	Vector3 StartLocation;

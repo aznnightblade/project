@@ -91,4 +91,6 @@ public class PlayerStatistics : MonoBehaviour {
 	public int Damage { get { return damage; } }
 	public float ChargedDamageScale { get { return chargedDamageScale; } }
 	public int Defense { get { return defense; } }
+	public int Health { get { return health; } 
+						set { health = value; } }
 }

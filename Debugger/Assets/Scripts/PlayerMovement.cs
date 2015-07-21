@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour {
 		gameObject.GetComponent<Renderer>().material.color = Color.red;
 		gameObject.GetComponent<Rigidbody> ().maxAngularVelocity = Speed;
 		player = gameObject.GetComponent<PlayerStatistics> ();
-		bullet.tag = "Player Bullet";										// Tags bullets created by player as a player bullet.
 	}
 	
 	// Update is called once per frame
@@ -126,29 +125,34 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		// Creates bullets based on how many threads a player has
+		GameObject newBullet, newBullet2, newBullet3, newBullet4;
 		switch (gameObject.GetComponent<PlayerStatistics> ().NumThreads) {
 		case 1:
-			Instantiate (bullet, pos, Quaternion.Euler (rot));		
+			newBullet = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot));		
 			break;
 		case 2:
-			Instantiate (bullet, pos - offset, Quaternion.Euler (rot));
-			Instantiate (bullet, pos + offset, Quaternion.Euler (rot));									
+			newBullet = (GameObject)Instantiate (bullet, pos - offset, Quaternion.Euler (rot));
+			newBullet2 = (GameObject)Instantiate (bullet, pos + offset, Quaternion.Euler (rot));
+			newBullet2.tag = "Player Bullet";
 			break;
 		case 3:
-			Instantiate (bullet, pos - offset, Quaternion.Euler (rot.x, rot.y + 10, rot.z));		
-			Instantiate (bullet, pos, Quaternion.Euler (rot));									
-			Instantiate (bullet, pos + offset, Quaternion.Euler (rot.x, rot.y - 10, rot.z));	
+			newBullet = (GameObject)Instantiate (bullet, pos - offset, Quaternion.Euler (rot.x, rot.y + 10, rot.z));		
+			newBullet2 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot));									
+			newBullet3 = (GameObject)Instantiate (bullet, pos + offset, Quaternion.Euler (rot.x, rot.y - 10, rot.z));	
+			newBullet2.tag = newBullet3.tag = "Player Bullet";
 			break;
 		case 4:
-			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 7, rot.z));		
-			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 2.5f, rot.z));								
-			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 2.5f, rot.z));	
-			Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 7, rot.z));		
+			newBullet = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 7, rot.z));		
+			newBullet2 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 2.5f, rot.z));								
+			newBullet3 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 2.5f, rot.z));	
+			newBullet4 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 7, rot.z));	
+			newBullet2.tag = newBullet3.tag = newBullet4.tag = "Player Bullet";
 			break;
 		default:
-			Instantiate (bullet, transform.localPosition, Quaternion.Euler (rot));
+			newBullet = (GameObject)Instantiate (bullet, transform.localPosition, Quaternion.Euler (rot));
 			break;
 		}
+		newBullet.tag = "Player Bullet";
 
 		// Resets so we can fire again.
 		bulletFired = false;
