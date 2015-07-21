@@ -53,14 +53,16 @@ public class PlayerStatistics : MonoBehaviour {
 	int money = 0;
 	[SerializeField]
 	int experience = 0;
-
+    public float healthBarLength;
 	// Use this for initialization
 	void Start () {
+        healthBarLength = Screen.width / 4;
 		StatsUpdate ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        AddjustCurrentHealth(0);
 		if(health <= 0){
 			Application.LoadLevel("HudWorld");
 		}
@@ -95,4 +97,34 @@ public class PlayerStatistics : MonoBehaviour {
 	public int Defense { get { return defense; } }
 	public int Health { get { return health; } 
 						set { health = value; } }
+
+
+    void OnGUI()
+    {
+
+        GUI.Box(new Rect(0,Screen.height - 20, healthBarLength, 20), health + "/" + maxHealth);
+        GUI.TextArea(new Rect(healthBarLength, Screen.height - 20, 40, 20), "HP");
+
+    }
+    public void AddjustCurrentHealth(int adj)
+    {
+
+        health += adj;
+
+        if (health < 0)
+            health = 0;
+
+        if (health > maxHealth)
+            health = maxHealth;
+
+        if (maxHealth < 1)
+            maxHealth = 1;
+
+
+        healthBarLength = (Screen.width / 2) * (health / (float)maxHealth);
+
+    }
+
+
 }
+ 

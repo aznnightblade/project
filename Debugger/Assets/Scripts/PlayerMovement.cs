@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour {
 	float ChargeDelay = 0.25f;
 	float ChargeTimer = 0.0f;
 	float ChargeScale = 1.0f;
-
+    string cd;
 	bool breakpointFired = false;
 	float breakpointCooldown = 0.0f;
 	
@@ -71,8 +71,19 @@ public class PlayerMovement : MonoBehaviour {
 		ChargeTimer -= Time.deltaTime;
 		FreezeTimer -= Time.deltaTime;
 		breakpointCooldown -= Time.deltaTime;
+        if (breakpointCooldown < 0)
+        {
+            breakpointCooldown = 0;
+        }
+        cd = breakpointCooldown.ToString();
 	}
+    void OnGUI()
+    {
 
+        GUI.Box(new Rect(0, Screen.height - 50, Screen.width / 4, 20),cd);
+        GUI.TextArea(new Rect(Screen.width / 4, Screen.height - 50, Screen.width / 4, 20), "Breakpoint CoolDown");
+
+    }
 	void FixedUpdate (){
 		Vector3 pos = transform.position;
 
