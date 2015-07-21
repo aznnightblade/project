@@ -14,6 +14,8 @@ public class EnemyBehavior : MonoBehaviour {
 	float fireTimer = 0.0f;
 	[SerializeField]
 	float shotDelay = 0.25f;
+	[SerializeField]
+
 	bool bulletFired = false;
 	Transform target = null;
 
