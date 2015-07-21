@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour {
 	float ReductionPerAgility = 0.005f;
 	[SerializeField]
 	float ReductionPerIntelligence = 0.075f;
-	bool bulletFired = false;
+	public bool bulletFired = false;
 	float fireTimer = 0.0f;
 
 	[SerializeField]
@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour {
 		gameObject.GetComponent<Renderer>().material.color = Color.red;
 		gameObject.GetComponent<Rigidbody> ().maxAngularVelocity = Speed;
 		player = gameObject.GetComponent<PlayerStatistics> ();
+		//bullet.tag = "Player Bullet";										// Tags bullets created by player as a player bullet.
 	}
 	
 	// Update is called once per frame
@@ -107,15 +108,8 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 rot = transform.rotation.eulerAngles;					// Creates a rotation Quaternion based on the players rotation.
 		rot.x = 90;														// Keeps the bullet rotated on the x axis properly
 
-		// Resets our bullet size if we had scaled it up from a charge shot.
-		if (bullet.transform.localScale.magnitude > 0.08f)
-			bullet.transform.localScale = new Vector3 (0.2f, 0.2f, 0.0f);
-
-		// Checks to see if we had charged up a shot
-		if (ChargeScale > 1) {
-			bullet.transform.localScale = bullet.transform.localScale * ChargeScale;
-			ChargeScale = 1.0f;
-		}
+		// Resets so we can fire again.
+		bulletFired = false;
 
 		// Calculates the bullet offset if we have more than one thread.
 		if (gameObject.GetComponent<PlayerStatistics> ().NumThreads > 1) {
@@ -125,44 +119,52 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		// Creates bullets based on how many threads a player has
-		GameObject newBullet, newBullet2, newBullet3, newBullet4;
 		switch (gameObject.GetComponent<PlayerStatistics> ().NumThreads) {
 		case 1:
-			newBullet = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot));		
+			CreateBullet (pos, Quaternion.Euler (rot));	
 			break;
 		case 2:
-			newBullet = (GameObject)Instantiate (bullet, pos - offset, Quaternion.Euler (rot));
-			newBullet2 = (GameObject)Instantiate (bullet, pos + offset, Quaternion.Euler (rot));
-			newBullet2.tag = "Player Bullet";
+			CreateBullet (pos - offset, Quaternion.Euler (rot));
+			CreateBullet (pos + offset, Quaternion.Euler (rot));									
 			break;
 		case 3:
-			newBullet = (GameObject)Instantiate (bullet, pos - offset, Quaternion.Euler (rot.x, rot.y + 10, rot.z));		
-			newBullet2 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot));									
-			newBullet3 = (GameObject)Instantiate (bullet, pos + offset, Quaternion.Euler (rot.x, rot.y - 10, rot.z));	
-			newBullet2.tag = newBullet3.tag = "Player Bullet";
+			CreateBullet (pos - offset, Quaternion.Euler (rot.x, rot.y + 7, rot.z));		
+			CreateBullet (pos, Quaternion.Euler (rot));									
+			CreateBullet (pos + offset, Quaternion.Euler (rot.x, rot.y - 7, rot.z));	
 			break;
 		case 4:
-			newBullet = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 7, rot.z));		
-			newBullet2 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y + 2.5f, rot.z));								
-			newBullet3 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 2.5f, rot.z));	
-			newBullet4 = (GameObject)Instantiate (bullet, pos, Quaternion.Euler (rot.x, rot.y - 7, rot.z));	
-			newBullet2.tag = newBullet3.tag = newBullet4.tag = "Player Bullet";
+			CreateBullet (pos, Quaternion.Euler (rot.x, rot.y + 7, rot.z));		
+			CreateBullet (pos, Quaternion.Euler (rot.x, rot.y + 2.5f, rot.z));								
+			CreateBullet (pos, Quaternion.Euler (rot.x, rot.y - 2.5f, rot.z));	
+			CreateBullet (pos, Quaternion.Euler (rot.x, rot.y - 7, rot.z));		
 			break;
 		default:
-			newBullet = (GameObject)Instantiate (bullet, transform.localPosition, Quaternion.Euler (rot));
+			CreateBullet (pos, Quaternion.Euler (rot));
 			break;
 		}
-		newBullet.tag = "Player Bullet";
 
-		// Resets so we can fire again.
-		bulletFired = false;
+		// Checks to see if we had charged up a shot
+		if (ChargeScale > 1) {
+			ChargeScale = 1.0f;
+		}
+	}
+
+	void CreateBullet(Vector3 pos, Quaternion rot) {
+		Transform newBullet = Instantiate (bullet, pos, rot) as Transform;
+		GameObject Bullet = newBullet.gameObject;
+		newBullet.tag = "Player Bullet";
+		newBullet.localScale = newBullet.localScale * ChargeScale;
+	
+		return;
 	}
 
 	void FireBreakpoint() {
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.y = gameObject.transform.position.y;
 
-		Instantiate (breakpoint, pos, Quaternion.identity);
+		GameObject newBullet = (GameObject)Instantiate (breakpoint, pos, Quaternion.identity);
+		newBullet.tag = "Player Breakpoint";
+
 		breakpointFired = false;
 	}
 

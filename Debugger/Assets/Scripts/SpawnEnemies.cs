@@ -27,6 +27,11 @@ public class SpawnEnemies : MonoBehaviour {
 
 	}
 
+	void OnDrawGizmos(){
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireCube(gameObject.transform.position, gameObject.transform.localScale);
+	}
+
 	void OnTriggerEnter(Collider other){
 		if (other.tag == "Player") {
 			for(int i = 0; i < numSpawns_Enemy; i++) {
