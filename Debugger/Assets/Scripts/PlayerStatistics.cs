@@ -61,7 +61,9 @@ public class PlayerStatistics : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if(health <= 0){
+			Application.LoadLevel("HudWorld");
+		}
 	}
 
 	// Call this once a stat has been increased to recalculate the players values
