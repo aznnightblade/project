@@ -25,6 +25,10 @@ public class EnemyStatistics : MonoBehaviour {
 	[SerializeField]
 	int currHealth = 0;
 	[SerializeField]
+	int initialHealth = 10;
+	[SerializeField]
+	int healthPerEndurance = 10;
+	[SerializeField]
 	int damage = 0;
 	[SerializeField]
 	int critChance = 0;
@@ -33,15 +37,16 @@ public class EnemyStatistics : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		maxHealth = currHealth = 10 + 10 * endurance;
-		damage = 5 + 3 * strength;
+		maxHealth = currHealth = initialHealth + healthPerEndurance * endurance;
+		damage = 3 + 2 * strength;
 		critChance = 5 + 5 * luck;
 		defense = 1 + 1 * endurance;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (currHealth <= 0.0f)
+			Destroy (gameObject);
 	}
 
 	// Accessors

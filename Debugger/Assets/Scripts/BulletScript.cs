@@ -40,9 +40,9 @@ public class BulletScript : MonoBehaviour {
 			Destroy (gameObject);
 	}
 
-	void OnTriggerEnter(Collider other) {
-		if (other.tag == "Enemy") {
-			EnemyStatistics enemy = other.GetComponent<EnemyStatistics>();
+	void OnTriggerEnter(Collider col) {
+		if (col.tag == "Enemy") {
+			EnemyStatistics enemy = col.GetComponent<EnemyStatistics>();
 			enemy.Health = enemy.Health - owner.Damage;
 			Destroy(gameObject);
 		}
