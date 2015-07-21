@@ -44,12 +44,8 @@ public class EnemyBehavior : MonoBehaviour {
 
 	}
 
-	void OnCollisionEnter(Collider other) {
-		if (other.tag == "Player Bullet") {
-			enemy.Health = enemy.Health - other.GetComponent<PlayerStatistics>().Damage;
-			Destroy(other);
-		}
-		if (other.tag == "Player" && gameObject.name == "Enemy") {
+	void OnCollisionEnter(Collision other) {
+		if (other.gameObject.tag == "Player" && gameObject.name == "Enemy") {
 			// Player takes damage
 		}
 	}
