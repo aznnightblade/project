@@ -162,8 +162,8 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.y = gameObject.transform.position.y;
 
-		GameObject newBullet = (GameObject)Instantiate (breakpoint, pos, Quaternion.identity);
-		newBullet.tag = "Player Breakpoint";
+		Transform newBreakpoint = Instantiate (breakpoint, pos, Quaternion.identity) as Transform;
+		newBreakpoint.tag = "Player Breakpoint";
 
 		breakpointFired = false;
 	}
