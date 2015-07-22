@@ -16,13 +16,17 @@ public class Dialog : MonoBehaviour {
 
     void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(800, 600, 400, 400));
+        GUILayout.BeginArea(new Rect(800, 200, 600, 600));
+        GUIStyle myStyle = new GUIStyle();
         if (Dialoguebox == true)
             {
-                GUILayout.Label(Tutorial[0]);
-                GUILayout.Label(Tutorial[1]);
-                GUILayout.Label(Tutorial[2]);
+                myStyle.fontSize = 16;
+                GUILayout.Label(Tutorial[0],myStyle);
+                GUILayout.Label(Tutorial[1],myStyle);
+                GUILayout.Label(Tutorial[2], myStyle);
+                GUILayout.Label(Tutorial[3], myStyle);
             }
+        GUILayout.EndArea();
     }
 
     void OnTriggerEnter(Collider col)

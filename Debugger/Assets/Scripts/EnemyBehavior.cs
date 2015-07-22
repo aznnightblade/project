@@ -88,11 +88,11 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 
 	void FireBullet() {
-		Vector3 pos = transform.position;
-		Vector3 rot = transform.rotation.eulerAngles;
-		rot.x = 90;
-
-		Transform newBullet = Instantiate (bullet, pos, Quaternion.Euler (rot)) as Transform;
+        Vector3 direction = Camera.main.WorldToScreenPoint(transform.position) - Camera.main.WorldToScreenPoint(target.position);
+        direction.Normalize();
+        float rot = (Mathf.Atan2(-direction.y, direction.x) * 180 / Mathf.PI) - 90.0f;
+		
+		Transform newBullet = Instantiate (bullet, transform.position, Quaternion.Euler (90, rot, 0)) as Transform;
 		GameObject bul = newBullet.gameObject;
 		bul.GetComponent<EnemyBulletScript> ().Owner = enemy;
 		newBullet.tag = "Enemy Bullet";
