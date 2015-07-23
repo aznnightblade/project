@@ -17,7 +17,7 @@ public class Levels : MonoBehaviour {
 
     void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(800, 600, 400, 400));
+		GUILayout.BeginArea(new Rect(800, 200, 600, 600));
         if (Dialoguebox == true)
         {
             GUILayout.Label(Destination[0]);
@@ -32,6 +32,7 @@ public class Levels : MonoBehaviour {
                 Application.LoadLevel("TestEnvironment");
             }
         }
+		GUILayout.EndArea();
     }
 
     void OnTriggerEnter(Collider col)

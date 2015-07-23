@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerStatistics : MonoBehaviour {
 
@@ -16,7 +17,12 @@ public class PlayerStatistics : MonoBehaviour {
 	int endurance = 1;
 	[SerializeField]
 	int luck = 1;
-
+	public RectTransform healthTransform;
+	private float cachedY;
+	private float minXvalue;
+	private float maxXvalue;
+	public Text healthText;
+	public Image visualHealth;
 	[SerializeField]
 	int health = 0;
 	[SerializeField]
@@ -53,16 +59,19 @@ public class PlayerStatistics : MonoBehaviour {
 	int money = 0;
 	[SerializeField]
 	int experience = 0;
-    public float healthBarLength;
+   
 	// Use this for initialization
 	void Start () {
-        healthBarLength = Screen.width / 4;
 		StatsUpdate ();
+		cachedY = healthTransform.position.y;
+		maxXvalue = healthTransform.position.x;
+		minXvalue = healthTransform.position.x - healthTransform.rect.width;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        AddjustCurrentHealth(0);
+       
 		if(health <= 0){
 			Application.LoadLevel("HudWorld");
 		}
@@ -96,34 +105,31 @@ public class PlayerStatistics : MonoBehaviour {
 	public float ChargedDamageScale { get { return chargedDamageScale; } }
 	public int Defense { get { return defense; } }
 	public int Health { get { return health; } 
-						set { health = value; } }
+		set { health = value; HandleHealth();} }
 
+	private void HandleHealth()
+	{
+		healthText.text = "HP: " + health;
 
-    void OnGUI()
-    {
+		float currentxValue = MapValues (health, 0, maxHealth, minXvalue, maxXvalue);
 
-        GUI.Box(new Rect(0,Screen.height - 20, healthBarLength, 20), health + "/" + maxHealth);
-        GUI.TextArea(new Rect(healthBarLength, Screen.height - 20, 40, 20), "HP");
+		healthTransform.position = new Vector3 (currentxValue, cachedY);
 
-    }
-    public void AddjustCurrentHealth(int adj)
-    {
+		if (health > maxHealth / 2) //more than 50% hp
+		{
+			visualHealth.color = new Color32((byte)MapValues(health,maxHealth/2,maxHealth,255,0),255,0,255);
+		} 
+		else //less than 50% hp
+		{
+			visualHealth.color = new Color32(255,(byte)MapValues(health,0,maxHealth/2,0,255),0,255);
+		}
+	}
 
-        health += adj;
+	private float MapValues(float x, float inMin, float inMax ,float outMin, float outMax)
+	{
+		return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 
-        if (health < 0)
-            health = 0;
-
-        if (health > maxHealth)
-            health = maxHealth;
-
-        if (maxHealth < 1)
-            maxHealth = 1;
-
-
-        healthBarLength = (Screen.width / 2) * (health / (float)maxHealth);
-
-    }
+	}
 
 
 }

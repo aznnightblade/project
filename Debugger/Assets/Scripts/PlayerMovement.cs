@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
@@ -31,15 +32,17 @@ public class PlayerMovement : MonoBehaviour {
 	float ChargeDelay = 0.25f;
 	float ChargeTimer = 0.0f;
 	float ChargeScale = 1.0f;
-    string cd;
+	float basecooldown;
 	bool breakpointFired = false;
 	float breakpointCooldown = 0.0f;
-	
+
+	public Image visualCooldown;
 	// Use this for initialization
 	void Start () {
 		gameObject.GetComponent<Renderer>().material.color = Color.red;
 		gameObject.GetComponent<Rigidbody> ().maxAngularVelocity = Speed;
 		player = gameObject.GetComponent<PlayerStatistics> ();
+
 		//bullet.tag = "Player Bullet";										// Tags bullets created by player as a player bullet.
 	}
 	
@@ -64,26 +67,24 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (Input.GetButton ("Breakpoint") && breakpointCooldown <= 0.0f) {
 			breakpointFired = true;
-			breakpointCooldown = breakpoint.GetComponent<BreakpointScript>().ShotDelay - (player.Intelligence * ReductionPerIntelligence);
+			basecooldown = breakpointCooldown = breakpoint.GetComponent<BreakpointScript>().ShotDelay - (player.Intelligence * ReductionPerIntelligence);
+
 		}
 
 		fireTimer -= Time.deltaTime;
 		ChargeTimer -= Time.deltaTime;
 		FreezeTimer -= Time.deltaTime;
-		breakpointCooldown -= Time.deltaTime;
+		visualCooldown.fillAmount -= breakpointCooldown -= Time.deltaTime;
+
+
         if (breakpointCooldown < 0)
         {
             breakpointCooldown = 0;
         }
-        cd = breakpointCooldown.ToString();
+
+
 	}
-    void OnGUI()
-    {
-
-        GUI.Box(new Rect(0, Screen.height - 50, Screen.width / 4, 20),cd);
-        GUI.TextArea(new Rect(Screen.width / 4, Screen.height - 50, Screen.width / 4, 20), "Breakpoint CoolDown");
-
-    }
+    
 	void FixedUpdate (){
 		Vector3 pos = transform.position;
 
@@ -185,4 +186,5 @@ public class PlayerMovement : MonoBehaviour {
 		get { return freezeTimer; }
 		set { freezeTimer = value; }
 	}
+
 }
