@@ -188,6 +188,5 @@ public class PlayerMovement : MonoBehaviour {
 		set { freezeTimer = value; }
 	}
 
-    
 
 }

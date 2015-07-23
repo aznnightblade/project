@@ -46,9 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BackToMenu.cs" />
      <Compile Include="Assets\Dialog.cs" />
      <Compile Include="Assets\DoorScript.cs" />
      <Compile Include="Assets\Levels.cs" />
+     <Compile Include="Assets\PlayGame.cs" />
      <Compile Include="Assets\Scripts\BossScript.cs" />
      <Compile Include="Assets\Scripts\BreakpointScript.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />
@@ -64,6 +66,7 @@
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\PlayerStatistics.cs" />
      <Compile Include="Assets\Scripts\SpawnEnemies.cs" />
+     <Compile Include="Assets\ShowInstructions.cs" />
      <Compile Include="Assets\Soundmanager.cs" />
      <Compile Include="Assets\Tutorial.cs" />
  <Reference Include="UnityEngine.UI">

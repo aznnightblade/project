@@ -69,7 +69,7 @@ public class PlayerStatistics : MonoBehaviour {
 		cachedY = healthTransform.position.y;
 		maxXvalue = healthTransform.position.x;
 		minXvalue = healthTransform.position.x - healthTransform.rect.width;
-
+        HandleHealth();
 	}
 	
 	// Update is called once per frame
@@ -83,6 +83,7 @@ public class PlayerStatistics : MonoBehaviour {
     
     void OnGUI()
     {
+        StatsUpdate();
         if (health <= 0)
         {
             GUILayout.BeginArea(new Rect(Screen.width / 2 - (rectSize.x / 2), Screen.height / 2 - (rectSize.y * 1.5f), 100, 200));

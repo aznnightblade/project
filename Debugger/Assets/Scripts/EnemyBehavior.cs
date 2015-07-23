@@ -71,6 +71,7 @@ public class EnemyBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (freezeTimer <= 0.0f) {
+            agent.Resume();
 			if(flankNum < Flanks.Length && Type == Strategy.Flank)
 				agent.destination = Flanks[flankNum].transform.position;
 			else
@@ -94,6 +95,7 @@ public class EnemyBehavior : MonoBehaviour {
 			fireTimer -= Time.deltaTime;
 		} else {
 			freezeTimer -= Time.deltaTime;
+            agent.Stop();
 		}
 	}
 
