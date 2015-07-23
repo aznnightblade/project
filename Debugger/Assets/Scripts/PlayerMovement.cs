@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Audio;
-
 public class PlayerMovement : MonoBehaviour {
 
 	[SerializeField]
@@ -17,7 +16,7 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField]
 	float Speed = 5;
 	float freezeTimer = 0.0f;
-    public AudioSource shoot;
+
 	[SerializeField]
 	float ShootDelay = 0.25f;
 	[SerializeField]
@@ -36,7 +35,7 @@ public class PlayerMovement : MonoBehaviour {
 	float basecooldown;
 	bool breakpointFired = false;
 	float breakpointCooldown = 0.0f;
-
+    public AudioSource shot;
 	public Image visualCooldown;
 	// Use this for initialization
 	void Start () {
@@ -76,8 +75,8 @@ public class PlayerMovement : MonoBehaviour {
 		ChargeTimer -= Time.deltaTime;
 		FreezeTimer -= Time.deltaTime;
 		breakpointCooldown -= Time.deltaTime;
-
         visualCooldown.fillAmount = breakpointCooldown / basecooldown;
+
         if (breakpointCooldown < 0)
         {
             breakpointCooldown = 0;
@@ -166,12 +165,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	void CreateBullet(Vector3 pos, Quaternion rot) {
 		Transform newBullet = Instantiate (bullet, pos, rot) as Transform;
-        //GameObject newBullet = Instantiate(bullet, pos, rot) as GameObject;
 		GameObject Bullet = newBullet.gameObject;
-        shoot.Play();
 		newBullet.tag = "Player Bullet";
-		newBullet.transform.localScale = newBullet.transform.localScale * ChargeScale;
-	    
+		newBullet.localScale = newBullet.localScale * ChargeScale;
+        shot.Play();
+	
 		return;
 	}
 
