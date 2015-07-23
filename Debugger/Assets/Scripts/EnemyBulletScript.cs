@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyBulletScript : MonoBehaviour {
 
 	EnemyStatistics owner;
-
+    public GameObject Soundmanager;
 	[SerializeField]
 	float speed = 8.0f;
 	Vector3 direction;
@@ -47,4 +47,6 @@ public class EnemyBulletScript : MonoBehaviour {
 	}
 
 	public EnemyStatistics Owner { get { return owner; } set { owner = value; } }
+
+
 }

@@ -4,24 +4,23 @@ using System.Collections;
 public class BulletScript : MonoBehaviour {
 	
 	PlayerStatistics owner;
-    public AudioClip hitSFx;
+   public Soundmanager soundmanager;
 	[SerializeField]
 	float Speed = 8.0f;
 	Vector3 direction;
 	float Distance = 0.0f;
 	Vector3 StartLocation;
-    private AudioSource source;
+    public AudioSource source;
 	[SerializeField]
 	float InitialTravelDistance = 100.0f;
 	[SerializeField]
 	float IncreasedDistancePerDex = 0.250f;
-
 	// Use this for initialization
 	void Start () {
 		owner = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics>();
 		StartLocation = transform.position;
 		Distance = InitialTravelDistance + (owner.Dexterity * IncreasedDistancePerDex);
-
+        soundmanager = GameObject.FindGameObjectWithTag("Sound Manager").GetComponent<Soundmanager>();
 
 		float degrees = transform.rotation.eulerAngles.y + 90.0f;
 		float radians = degrees * (Mathf.PI / 180.0f);
@@ -42,11 +41,14 @@ public class BulletScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider col) {
+       
 		if (col.tag == "Enemy") {
+           
 			EnemyStatistics enemy = col.GetComponent<EnemyStatistics>();
-			enemy.Health = enemy.Health - owner.Damage;
+			enemy.Health -= owner.Damage;
 			Destroy(gameObject);
-            source.PlayOneShot(hitSFx);
+            soundmanager.Sounds[0].Play();
+            
 		}
 	}
 

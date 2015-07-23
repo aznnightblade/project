@@ -18,6 +18,7 @@ public class Tutorial : MonoBehaviour {
 			GUILayout.Label(Corruption[1]);
 			GUILayout.Label(Corruption[2]);
 		}
+        GUILayout.EndArea();
 	}
 	void OnTriggerEnter(Collider col)
 	{

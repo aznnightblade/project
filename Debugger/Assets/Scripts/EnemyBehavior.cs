@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.Audio;
 public class EnemyBehavior : MonoBehaviour {
 
 	[SerializeField]
@@ -20,7 +20,7 @@ public class EnemyBehavior : MonoBehaviour {
 	[SerializeField]
 	float freezeTimer = 0.0f;
 
-
+    public AudioSource source;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +37,7 @@ public class EnemyBehavior : MonoBehaviour {
 				PlayerStatistics player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics> ();
 				//player.Money += enemy.MoneyDropped;
 				player.Experience += enemy.ExperienceWorth;
+                source.Play();
 				Destroy (gameObject);
 			}
 
