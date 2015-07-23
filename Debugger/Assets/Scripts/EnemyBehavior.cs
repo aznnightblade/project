@@ -20,6 +20,8 @@ public class EnemyBehavior : MonoBehaviour {
 	Transform target = null;
 	Transform attackTarget = null;
 
+	private NavMeshAgent agent = null;
+
 	[SerializeField]
 	float freezeTimer = 0.0f;
 
@@ -37,25 +39,29 @@ public class EnemyBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		gameObject.GetComponent<Renderer> ().material.color = Color.magenta;
-		gameObject.GetComponent<Rigidbody> ().maxAngularVelocity = Speed;
+		agent = gameObject.GetComponent<NavMeshAgent> ();
 		enemy = gameObject.GetComponent<EnemyStatistics> ();
 		if (Type == Strategy.Attack) {
-			target = GameObject.FindGameObjectWithTag ("Player").transform;
-			attackTarget = target;
+			agent.destination = GameObject.FindGameObjectWithTag ("Player").transform.position;
+			attackTarget = GameObject.FindGameObjectWithTag ("Player").transform;
+
+			if(Ranged) {
+				agent.stoppingDistance = 2.0f;
+				agent.autoBraking = true;
+			}
 		} else if (Type == Strategy.Flank && !Ranged) {
 			Flanks = GameObject.FindGameObjectsWithTag("Melee Flank");
-			target = Flanks [Random.Range (0, 1)].transform;
+			flankNum = Random.Range (0, 1);
+			agent.destination = Flanks [flankNum].transform.position;
 		} else {
-			int rNum = Random.Range (0, 1);
+			flankNum = Random.Range (0, 1);
 			attackTarget = GameObject.FindGameObjectWithTag ("Player").transform;
 			Flanks = GameObject.FindGameObjectsWithTag("Ranged Flank");
 
-			if(rNum == 0) {
-				target = Flanks[1].transform;
-				flankNum = 1;
+			if(flankNum == 0) {
+				agent.destination = Flanks[1].transform.position;
 			} else {
-				target = Flanks[3].transform;
+				agent.destination = Flanks[3].transform.position;
 				clockwise = true;
 				flankNum = 3;
 			}
@@ -65,6 +71,11 @@ public class EnemyBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (freezeTimer <= 0.0f) {
+			if(flankNum < Flanks.Length && Type == Strategy.Flank)
+				agent.destination = Flanks[flankNum].transform.position;
+			else
+				agent.destination = GameObject.FindGameObjectWithTag("Player").transform.position;
+
 			if (enemy.Health <= 0) {
 				PlayerStatistics player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics> ();
 				//player.Money += enemy.MoneyDropped;
@@ -74,9 +85,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 			// Do this for ranged enemies only
 			if (Ranged) {
-				Vector3 pos = transform.position;
-				Vector3 targetPoint = target.position;
-				if (fireTimer <= 0.0f && Vector3.Distance (targetPoint, pos) <= 50.0f) {
+				if (fireTimer <= 0.0f && agent.remainingDistance <= 50.0f) {
 					fireTimer = shotDelay - (0.005f * enemy.Agility);
 					bulletFired = true;
 				}
@@ -90,62 +99,52 @@ public class EnemyBehavior : MonoBehaviour {
 
 	void FixedUpdate() {
 		if (freezeTimer <= 0.0f) {
-			// Draw a vector from enemy to player and move in that direction
-			Vector3 pos = transform.position;
-			Vector3 targetPoint = target.position;
+			if(!Ranged && Type == Strategy.Flank){
+				if(agent.remainingDistance < 1.0f && (flankNum == 0 || flankNum == 1)){
+					int rNum = Random.Range(0, 25 + Mathf.CeilToInt(enemy.Health/enemy.MaxHealth * 75));
 
-			if (!Ranged || (Ranged && Vector3.Distance (attackTarget.position, pos) > 2.0f && Type == Strategy.Attack) ||
-			    (Ranged && Type == Strategy.Flank)) {
-				Vector3 distance = target.position - pos;
-				distance.Normalize ();
-
-				pos.x = pos.x + distance.x * Speed * Time.deltaTime;
-				pos.z = pos.z + distance.z * Speed * Time.deltaTime;
-
-				transform.position = pos;
-
-				if(!Ranged){
-					if(Vector3.Distance(pos, targetPoint) < 1.0f && (target == Flanks[0] || target == Flanks[1])){
-						int rNum = Random.Range(0, 25 + Mathf.CeilToInt(enemy.Health/enemy.MaxHealth * 75));
-
-						if(rNum > 0 && rNum < 25)
-							target = GameObject.FindGameObjectWithTag("Player").transform;
-						else
-							target = Flanks[2].transform;
-					} else if(Vector3.Distance(pos, targetPoint) < 1.0f && target == Flanks[2]) {
-						target = GameObject.FindGameObjectWithTag("Player").transform;
+					if(rNum > 0 && rNum < 25) {
+						agent.destination = GameObject.FindGameObjectWithTag("Player").transform.position;
+					} else {
+						agent.destination = Flanks[2].transform.position;
+						flankNum = 2;
 					}
+				} else if(agent.remainingDistance < 1.0f && flankNum == 2) {
+					agent.destination = GameObject.FindGameObjectWithTag("Player").transform.position;
+					flankNum = 4;
+				}
 
-					if(target == Flanks[2]) {
-						int rNum = Random.Range(0, 100);
+				if(flankNum == 2) {
+					int rNum = Random.Range(0, 100);
 
-						if(rNum > 30 && rNum < 40)
-							target = GameObject.FindGameObjectWithTag("Player").transform;
+					if(rNum > 30 && rNum < 40) {
+						agent.destination = GameObject.FindGameObjectWithTag("Player").transform.position;
+						flankNum = 4;
 					}
-				} else {
-					if(Vector3.Distance(pos, targetPoint) < 1.0f) {
-						if (clockwise) {
-							flankNum++;
+				}
+			} else if (Type == Strategy.Flank) {
+				if(agent.remainingDistance < 1.0f) {
+					if (clockwise) {
+						flankNum++;
 
-							if(flankNum >= Flanks.Length) {
-								flankNum = 0;
-							}
-
-							target = Flanks[flankNum].transform;
-						} else {
-							flankNum--;
-
-							if(flankNum <= -1) {
-								flankNum = Flanks.Length - 1;
-							}
-
-							target  = Flanks[flankNum].transform;
+						if(flankNum >= Flanks.Length) {
+							flankNum = 0;
 						}
+
+						agent.destination = Flanks[flankNum].transform.position;
+					} else {
+						flankNum--;
+
+						if(flankNum <= -1) {
+							flankNum = Flanks.Length - 1;
+						}
+
+						agent.destination  = Flanks[flankNum].transform.position;
 					}
 				}
 			}
-
-			if (bulletFired && Vector3.Distance (targetPoint, pos) <= 2.0f) {
+	
+			if (bulletFired && agent.remainingDistance <= 2.0f) {
 				FireBullet ();
 			}
 		}

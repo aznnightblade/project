@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 public class BulletScript : MonoBehaviour {
 	
 	PlayerStatistics owner;
+    PlayerMovement movement;
     public AudioClip hitSFx;
 	[SerializeField]
 	float Speed = 8.0f;
@@ -20,6 +21,7 @@ public class BulletScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		owner = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics>();
+        movement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 		StartLocation = transform.position;
 		Distance = InitialTravelDistance + (owner.Dexterity * IncreasedDistancePerDex);
 
@@ -33,8 +35,8 @@ public class BulletScript : MonoBehaviour {
 	void Update () {
 		Vector3 pos = transform.position;
 		
-		pos.x += direction.x * Speed * Time.deltaTime;
-		pos.z += direction.y * Speed * Time.deltaTime;
+		pos.x += (direction.x * Speed * Time.deltaTime);
+		pos.z += (direction.y * Speed * Time.deltaTime);
 
 		transform.position = pos;
 
