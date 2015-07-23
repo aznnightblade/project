@@ -31,16 +31,28 @@ public class EnemyStatistics : MonoBehaviour {
 	[SerializeField]
 	int damage = 0;
 	[SerializeField]
+	int initialDamage = 5;
+	[SerializeField]
+	int damagePerStrength = 3;
+	[SerializeField]
 	int critChance = 0;
 	[SerializeField]
+	int initialCritChance = 5;
+	[SerializeField]
+	int critChancePerLuck = 5;
+	[SerializeField]
 	int defense = 0;
+	[SerializeField]
+	int initialDefense = 1;
+	[SerializeField]
+	int defensePerEndurance = 1;
 
 	// Use this for initialization
 	void Start () {
 		maxHealth = currHealth = initialHealth + healthPerEndurance * endurance;
-		damage = 3 + 2 * strength;
-		critChance = 5 + 5 * luck;
-		defense = 1 + 1 * endurance;
+		damage = initialDamage + damagePerStrength * strength;
+		critChance = initialCritChance + critChancePerLuck * luck;
+		defense = initialDefense + defensePerEndurance * endurance;
 	}
 	
 	// Update is called once per frame
@@ -61,4 +73,5 @@ public class EnemyStatistics : MonoBehaviour {
 	public int Health { get { return currHealth; } 
 						set { currHealth = value; } }
 	public int Damage { get { return damage; } }
+	public int Defense { get { return defense; } }
 }

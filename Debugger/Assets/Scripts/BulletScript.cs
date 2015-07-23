@@ -44,7 +44,7 @@ public class BulletScript : MonoBehaviour {
 	void OnTriggerEnter(Collider col) {
 		if (col.tag == "Enemy") {
 			EnemyStatistics enemy = col.GetComponent<EnemyStatistics>();
-			enemy.Health = enemy.Health - owner.Damage;
+			enemy.Health = enemy.Health - (owner.Damage - enemy.Defense);
 			Destroy(gameObject);
             source.PlayOneShot(hitSFx);
 		}

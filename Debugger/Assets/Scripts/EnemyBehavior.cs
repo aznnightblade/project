@@ -16,6 +16,9 @@ public class EnemyBehavior : MonoBehaviour {
 	float shotDelay = 0.25f;
 	bool bulletFired = false;
 	Transform target = null;
+	[SerializeField]
+	float timeBetweenPhysicalHits = 1.5f;
+	float hitPlayerTimer = 0.0f;
 
 	[SerializeField]
 	float freezeTimer = 0.0f;
@@ -54,6 +57,8 @@ public class EnemyBehavior : MonoBehaviour {
 		} else {
 			freezeTimer -= Time.deltaTime;
 		}
+
+		hitPlayerTimer -= Time.deltaTime;
 	}
 
 	void FixedUpdate() {
@@ -71,6 +76,15 @@ public class EnemyBehavior : MonoBehaviour {
 
 				transform.position = pos;
 			}
+			else if (Ranged && Vector3.Distance(targetPoint, pos) < 2.0f) {
+				Vector3 backupDistance = pos - targetPoint;
+				backupDistance.Normalize();
+
+				pos.x = pos.x + backupDistance.x * Speed * Time.deltaTime;
+				pos.z = pos.z + backupDistance.z * Speed * Time.deltaTime;
+				
+				transform.position = pos;
+			}
 
 			if (bulletFired && Vector3.Distance (targetPoint, pos) <= 2.0f) {
 				FireBullet ();
@@ -78,12 +92,13 @@ public class EnemyBehavior : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter(Collision other) {
-		if (other.gameObject.tag == "Player") {
+	void OnCollisionStay(Collision other) {
+		if (other.gameObject.tag == "Player" && !Ranged && hitPlayerTimer <= 0.0f) {
 			// Player takes damage
 			PlayerStatistics player = other.gameObject.GetComponent<PlayerStatistics>();
 			int totalDamage = enemy.Damage - player.Defense;
 			player.Health -= totalDamage;
+			hitPlayerTimer = timeBetweenPhysicalHits;
 		}
 	}
 
