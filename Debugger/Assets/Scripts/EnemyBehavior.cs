@@ -31,7 +31,7 @@ public class EnemyBehavior : MonoBehaviour {
 	[SerializeField]
 	Strategy Type = Strategy.Attack;
 	[SerializeField]
-	Transform[] Flanks = null;
+	GameObject[] Flanks = null;
 	bool clockwise = false;
 	int flankNum = 0;
 
@@ -44,16 +44,18 @@ public class EnemyBehavior : MonoBehaviour {
 			target = GameObject.FindGameObjectWithTag ("Player").transform;
 			attackTarget = target;
 		} else if (Type == Strategy.Flank && !Ranged) {
-			target = Flanks [Random.Range (0, 1)];
+			Flanks = GameObject.FindGameObjectsWithTag("Melee Flank");
+			target = Flanks [Random.Range (0, 1)].transform;
 		} else {
 			int rNum = Random.Range (0, 1);
 			attackTarget = GameObject.FindGameObjectWithTag ("Player").transform;
+			Flanks = GameObject.FindGameObjectsWithTag("Ranged Flank");
 
 			if(rNum == 0) {
-				target = Flanks[1];
+				target = Flanks[1].transform;
 				flankNum = 1;
 			} else {
-				target = Flanks[3];
+				target = Flanks[3].transform;
 				clockwise = true;
 				flankNum = 3;
 			}
@@ -109,7 +111,7 @@ public class EnemyBehavior : MonoBehaviour {
 						if(rNum > 0 && rNum < 25)
 							target = GameObject.FindGameObjectWithTag("Player").transform;
 						else
-							target = Flanks[2];
+							target = Flanks[2].transform;
 					} else if(Vector3.Distance(pos, targetPoint) < 1.0f && target == Flanks[2]) {
 						target = GameObject.FindGameObjectWithTag("Player").transform;
 					}
@@ -129,7 +131,7 @@ public class EnemyBehavior : MonoBehaviour {
 								flankNum = 0;
 							}
 
-							target = Flanks[flankNum];
+							target = Flanks[flankNum].transform;
 						} else {
 							flankNum--;
 
@@ -137,7 +139,7 @@ public class EnemyBehavior : MonoBehaviour {
 								flankNum = Flanks.Length - 1;
 							}
 
-							target  = Flanks[flankNum];
+							target  = Flanks[flankNum].transform;
 						}
 					}
 				}
