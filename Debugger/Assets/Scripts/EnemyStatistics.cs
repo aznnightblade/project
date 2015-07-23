@@ -70,6 +70,9 @@ public class EnemyStatistics : MonoBehaviour {
 	public int Luck { get {return luck;} }
 	public int MoneyDropped { get {return moneyDropped;} }
 	public int ExperienceWorth { get { return experienceWorth; } }
+    public int MaxHealth { get { return maxHealth; }
+                           set { maxHealth = value; }
+    }
 	public int Health { get { return currHealth; } 
 						set { currHealth = value; } }
 	public int Damage { get { return damage; } }
