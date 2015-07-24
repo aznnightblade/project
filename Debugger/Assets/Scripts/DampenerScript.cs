@@ -9,7 +9,12 @@ public class DampenerScript : MonoBehaviour {
 	float bulletScaleToDamage = 1.25f;
 	[SerializeField]
 	bool destroyed = false;
+    public Soundmanager sounds;
 
+    void Start()
+    {
+        sounds = GameObject.FindGameObjectWithTag("Sound Manager").GetComponent<Soundmanager>();
+    }
 	void OnTriggerEnter(Collider col){
 		if (col.gameObject.tag == "Player Bullet") {
 			float bulletScale = col.gameObject.GetComponentInChildren<Transform>().localScale.x / 0.2f;
@@ -19,6 +24,7 @@ public class DampenerScript : MonoBehaviour {
 				
 				if (health <= 0) {
 					destroyed = true;
+                    sounds.Sounds[1].Play();
 					gameObject.GetComponent<Renderer>().material.color = Color.black;
 				}
 			}

@@ -83,7 +83,6 @@ public class PlayerStatistics : MonoBehaviour {
     
     void OnGUI()
     {
-        StatsUpdate();
         if (health <= 0)
         {
             GUILayout.BeginArea(new Rect(Screen.width / 2 - (rectSize.x / 2), Screen.height / 2 - (rectSize.y * 1.5f), 100, 200));

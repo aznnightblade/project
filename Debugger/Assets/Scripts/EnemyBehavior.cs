@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.Audio;
 public class EnemyBehavior : MonoBehaviour {
 
 	enum Strategy { Attack, Flank };
@@ -37,8 +37,10 @@ public class EnemyBehavior : MonoBehaviour {
 	bool clockwise = false;
 	int flankNum = 0;
 
+    public Soundmanager sounds;
 	// Use this for initialization
 	void Start () {
+        sounds = GameObject.FindGameObjectWithTag("Sound Manager").GetComponent<Soundmanager>();
 		agent = gameObject.GetComponent<NavMeshAgent> ();
 		enemy = gameObject.GetComponent<EnemyStatistics> ();
 		if (Type == Strategy.Attack) {
@@ -81,6 +83,7 @@ public class EnemyBehavior : MonoBehaviour {
 				PlayerStatistics player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerStatistics> ();
 				//player.Money += enemy.MoneyDropped;
 				player.Experience += enemy.ExperienceWorth;
+                sounds.Sounds[2].Play();
 				Destroy (gameObject);
 			}
 

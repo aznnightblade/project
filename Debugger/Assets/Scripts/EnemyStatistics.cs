@@ -57,8 +57,7 @@ public class EnemyStatistics : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (currHealth <= 0.0f)
-			Destroy (gameObject);
+
 	}
 
 	// Accessors
