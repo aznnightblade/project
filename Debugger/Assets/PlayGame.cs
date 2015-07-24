@@ -5,7 +5,7 @@ public class PlayGame : MonoBehaviour {
 
 	public void play()
 	{
-		Application.LoadLevel ("HudWorld");
+		Application.LoadLevel ("Instructions");
 	}
 
 }

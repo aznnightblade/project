@@ -4,7 +4,7 @@ using System.Collections;
 public class BackToMenu : MonoBehaviour {
 	public void GoBack () {
 	
-		Application.LoadLevel ("Menu");
+		Application.LoadLevel ("HudWorld");
 	}
 	// Use this for initialization
 	void Start () {
