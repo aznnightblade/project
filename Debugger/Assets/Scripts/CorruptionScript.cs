@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.Audio;
 public class CorruptionScript : MonoBehaviour {
 
 	[SerializeField]
 	int health = 100;
 	[SerializeField]
 	int defense = 2;
+    public Soundmanager sounds;
 
+    void Start()
+    {
+        sounds = GameObject.FindGameObjectWithTag("Sound Manager").GetComponent<Soundmanager>();
+    }
 	void OnTriggerEnter(Collider col){
 		if (col.gameObject.tag == "Player Bullet") {
 			float bulletScale = col.gameObject.GetComponentInChildren<Transform>().localScale.x / 0.2f;
@@ -18,7 +23,11 @@ public class CorruptionScript : MonoBehaviour {
 			Destroy(col.gameObject);
 
 			if(health <= 0)
-				Destroy(gameObject);
+            {
+                sounds.Sounds[1].Play();
+                Destroy(gameObject);
+            }
+				
 		}
 	}
 }

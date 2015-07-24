@@ -23,13 +23,16 @@ public class BossScript : MonoBehaviour {
 	[SerializeField]
 	float activateDistance = 10.0f;
 
+	[SerializeField]
+	Transform[] shotLocations = null;
+
 	public bool active = false;
 
 	Random rnd = new Random();
 
 	private NavMeshAgent agent = null;
 	[SerializeField]
-	Transform[] Waypoints;
+	Transform[] Waypoints = null;
 	Vector3 destination = Vector3.zero;
 
 	void Start() {
@@ -58,9 +61,11 @@ public class BossScript : MonoBehaviour {
 	}
 
 	void CreateBullet(){
-		Vector3 direction = target.transform.position - transform.position;
+		Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+		Vector3 targetScreenPos = Camera.main.WorldToScreenPoint (shotLocations[Random.Range(0, shotLocations.Length)].position);
+		Vector3 direction = targetScreenPos - screenPos;
 		direction.Normalize ();
-		float rotation = (Mathf.Atan2(-direction.y, direction.x) * 180 / Mathf.PI) - 90;
+		float rotation = -((Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI) - 90.0f);
 
 		Transform newBullet = Instantiate(bullet, transform.position, Quaternion.Euler(new Vector3(90, rotation, 0))) as Transform;
 		newBullet.gameObject.GetComponent<EnemyBulletScript> ().Owner = boss;

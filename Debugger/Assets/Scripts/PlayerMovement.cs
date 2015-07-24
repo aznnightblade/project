@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+using UnityEngine.Audio;
 public class PlayerMovement : MonoBehaviour {
 
 	[SerializeField]
@@ -35,8 +35,10 @@ public class PlayerMovement : MonoBehaviour {
 	float basecooldown;
 	bool breakpointFired = false;
 	float breakpointCooldown = 0.0f;
-
+    public AudioSource shot;
 	public Image visualCooldown;
+    public Image ChargeMeter;
+    float basechargescale = 1.0f;
 	// Use this for initialization
 	void Start () {
 		gameObject.GetComponent<Renderer>().material.color = Color.red;
@@ -57,7 +59,7 @@ public class PlayerMovement : MonoBehaviour {
 		// Checks to see if we are charging a shot
 		if (Input.GetButton("Fire2") && ChargeTimer <= 0.0f && !Input.GetButton("Fire1")) {
 			if(ChargeScale < 2.0f) {
-				ChargeScale += ChargeSpeed;
+                ChargeScale += ChargeSpeed;
 				ChargeTimer = ChargeDelay - (ReductionPerAgility * player.Agility);
 
 				if(ChargeScale > 2.0f)
@@ -70,13 +72,13 @@ public class PlayerMovement : MonoBehaviour {
 			basecooldown = breakpointCooldown = breakpoint.GetComponent<BreakpointScript>().ShotDelay - (player.Intelligence * ReductionPerIntelligence);
 
 		}
-
+        ChargeMeter.fillAmount = ChargeScale - 1;
 		fireTimer -= Time.deltaTime;
 		ChargeTimer -= Time.deltaTime;
 		FreezeTimer -= Time.deltaTime;
-		visualCooldown.fillAmount -= breakpointCooldown -= Time.deltaTime;
-
-
+		breakpointCooldown -= Time.deltaTime;
+        visualCooldown.fillAmount = breakpointCooldown / basecooldown;
+        
         if (breakpointCooldown < 0)
         {
             breakpointCooldown = 0;
@@ -168,6 +170,7 @@ public class PlayerMovement : MonoBehaviour {
 		GameObject Bullet = newBullet.gameObject;
 		newBullet.tag = "Player Bullet";
 		newBullet.localScale = newBullet.localScale * ChargeScale;
+        shot.Play();
 	
 		return;
 	}
@@ -186,5 +189,6 @@ public class PlayerMovement : MonoBehaviour {
 		get { return freezeTimer; }
 		set { freezeTimer = value; }
 	}
+
 
 }

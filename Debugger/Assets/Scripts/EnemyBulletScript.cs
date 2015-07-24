@@ -21,7 +21,7 @@ public class EnemyBulletScript : MonoBehaviour {
 		distance = travelDistance + 0.25f * owner.Dexterity;
 
 		float degrees = transform.rotation.eulerAngles.y + 90.0f;
-		float radians = degrees * (Mathf.PI * 180.0f);
+		float radians = degrees * (Mathf.PI / 180.0f);
 		direction = new Vector3 (-Mathf.Cos (radians), Mathf.Sin (radians), 0.0f);
 	}
 	

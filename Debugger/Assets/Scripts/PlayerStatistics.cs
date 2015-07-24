@@ -59,24 +59,47 @@ public class PlayerStatistics : MonoBehaviour {
 	int money = 0;
 	[SerializeField]
 	int experience = 0;
-   
+
+
+    Vector2 rectSize = new Vector2(200, 40);
 	// Use this for initialization
 	void Start () {
 		StatsUpdate ();
+        Time.timeScale = 1.0f;
 		cachedY = healthTransform.position.y;
 		maxXvalue = healthTransform.position.x;
 		minXvalue = healthTransform.position.x - healthTransform.rect.width;
-
+        HandleHealth();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-       
-		if(health <= 0){
-			Application.LoadLevel("HudWorld");
-		}
+        if (health<= 0)
+        {
+           Time.timeScale = 0;
+        }
 	}
 
+    
+    void OnGUI()
+    {
+        if (health <= 0)
+        {
+            GUILayout.BeginArea(new Rect(Screen.width / 2 - (rectSize.x / 2), Screen.height / 2 - (rectSize.y * 1.5f), 100, 200));
+            GUILayout.Label("GameOver", GUILayout.Width(200));
+            
+            if (GUILayout.Button("Restart"))
+            {
+                Application.LoadLevel("TestEnvironment");
+            }
+            if (GUILayout.Button("Quit"))
+            {
+                Application.LoadLevel("HudWorld");
+               
+            }
+            GUILayout.EndArea();
+        }
+    }
 	// Call this once a stat has been increased to recalculate the players values
 	public void StatsUpdate(){
 		maxHealth = health = initialHealth + healthPerEndurance * endurance;
@@ -106,6 +129,8 @@ public class PlayerStatistics : MonoBehaviour {
 	public int Defense { get { return defense; } }
 	public int Health { get { return health; } 
 		set { health = value; HandleHealth();} }
+
+    
 
 	private void HandleHealth()
 	{
