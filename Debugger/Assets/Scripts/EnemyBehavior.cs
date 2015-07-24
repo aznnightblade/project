@@ -99,6 +99,7 @@ public class EnemyBehavior : MonoBehaviour {
 		} else {
 			freezeTimer -= Time.deltaTime;
             agent.Stop();
+            transform.Translate(Vector3.zero);
 		}
 	}
 
