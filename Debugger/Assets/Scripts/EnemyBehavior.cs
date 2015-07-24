@@ -157,6 +157,12 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision other) {
+		if (other.gameObject.tag == "Terrain" || other.gameObject.tag == "Player") {
+			agent.velocity = Vector3.zero;
+			gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+			gameObject.transform.Translate(Vector3.zero);
+		}
+
 		if (other.gameObject.tag == "Player") {
 			// Player takes damage
 			PlayerStatistics player = other.gameObject.GetComponent<PlayerStatistics>();
