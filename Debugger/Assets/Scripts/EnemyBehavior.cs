@@ -150,7 +150,7 @@ public class EnemyBehavior : MonoBehaviour {
 				}
 			}
 	
-			if (bulletFired && agent.remainingDistance <= 2.0f) {
+			if (bulletFired) {
 				FireBullet ();
 			}
 		}
