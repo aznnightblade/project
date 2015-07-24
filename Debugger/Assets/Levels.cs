@@ -25,12 +25,17 @@ public class Levels : MonoBehaviour {
             {
                 Dialoguebox = false;
                 Application.LoadLevel("Tutorial");
+                GameManager.tutorial=true;
             }
-            if (GUILayout.Button(Destination[2]))
+            if (GameManager.tutorial==true)
             {
-                Dialoguebox = false;
-                Application.LoadLevel("TestEnvironment");
+                if (GUILayout.Button(Destination[2]))
+                {
+                    Dialoguebox = false;
+                    Application.LoadLevel("TestEnvironment");
+                }
             }
+           
         }
 		GUILayout.EndArea();
     }
