@@ -4,6 +4,8 @@ using System.Collections;
 public class Dialog : MonoBehaviour {
     public string[] Tutorial;
     bool Dialoguebox = false;
+	public GameObject Bubble;
+	public GameObject text;
 	// Use this for initialization
 	void Start () {
 	
@@ -34,6 +36,8 @@ public class Dialog : MonoBehaviour {
         if (col.gameObject.tag=="Player")
         {
             Dialoguebox = true;
+			Bubble.SetActive(true);
+			text.SetActive(true);
         }
        
     }
@@ -42,6 +46,8 @@ public class Dialog : MonoBehaviour {
         if (col.gameObject.tag == "Player")
         {
             Dialoguebox = false;
+			Bubble.SetActive(false);
+			text.SetActive(false);
         }
     }
 }
