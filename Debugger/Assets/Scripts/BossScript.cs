@@ -50,6 +50,11 @@ public class BossScript : MonoBehaviour {
 				gameObject.GetComponent<NavMeshAgent>().destination = Waypoints[Random.Range(0,Waypoints.Length)].transform.position;
 			}
 
+			if(boss.Health <= 0) {
+				gameObject.GetComponent<VictoryScript>().Victory();
+				Destroy(gameObject);
+			}
+
 			if(fireTimer <= 0.0f){
 				CreateBullet();
 				fireTimer = ShootDelay - (boss.Agility * ReductionPerAgility);
@@ -76,8 +81,9 @@ public class BossScript : MonoBehaviour {
 	void OnCollisionEnter(Collision Col) {
 		if(Col.gameObject.tag == "Player" && hitPlayerTimer <= 0.0f) {
 			PlayerStatistics player = Col.gameObject.GetComponent<PlayerStatistics>();
-			player.Health = player.Health - (boss.Damage - player.Defense);
-			hitPlayerTimer = timeBetweenPhysicalHits;
+            int totalDamage = boss.Damage - player.Defense;
+            player.Health -= totalDamage;
+            player.CalculateInvulerability(totalDamage);
 		}
 	}
 }

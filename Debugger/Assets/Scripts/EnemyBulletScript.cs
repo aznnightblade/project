@@ -40,9 +40,11 @@ public class EnemyBulletScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player") {
-			PlayerStatistics player = other.GetComponent<PlayerStatistics>();
-			player.Health = player.Health - (owner.Damage - player.Defense);
-			Destroy(gameObject);
+            PlayerStatistics player = other.GetComponent<PlayerStatistics>();
+            int totalDamage = owner.Damage - player.Defense;
+            player.Health -= totalDamage;
+            player.CalculateInvulerability(totalDamage);
+            Destroy(gameObject);
 		}
 	}
 

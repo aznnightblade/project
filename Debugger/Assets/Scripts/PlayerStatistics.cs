@@ -60,6 +60,10 @@ public class PlayerStatistics : MonoBehaviour {
 	[SerializeField]
 	int experience = 0;
 
+    [SerializeField]
+    float hurtTimer = 0.0f;
+    [SerializeField]
+    float timePerDamage = 0.1f;
 
     Vector2 rectSize = new Vector2(200, 40);
 	// Use this for initialization
@@ -78,8 +82,12 @@ public class PlayerStatistics : MonoBehaviour {
         {
            Time.timeScale = 0;
         }
+        hurtTimer -= Time.deltaTime;
 	}
-
+    public void CalculateInvulerability(int damage)
+    {
+        hurtTimer = timePerDamage * damage;
+    }
     
     void OnGUI()
     {
@@ -139,6 +147,11 @@ public class PlayerStatistics : MonoBehaviour {
 		set { health = value; HandleHealth();} }
 	public int MaxHealth { get { return maxHealth; } }
 
+    public float HurtTimer
+    {
+        get { return hurtTimer; }
+        set { hurtTimer = value; }
+    }
     
 
 	private void HandleHealth()
