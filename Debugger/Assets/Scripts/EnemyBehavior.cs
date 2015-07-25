@@ -37,6 +37,11 @@ public class EnemyBehavior : MonoBehaviour {
 	bool clockwise = false;
 	int flankNum = 0;
 
+	[SerializeField]
+	Transform healthPickUp = null;
+	[SerializeField]
+	float dropRate = 2.5f;
+
     public Soundmanager sounds;
 	// Use this for initialization
 	void Start () {
@@ -84,6 +89,9 @@ public class EnemyBehavior : MonoBehaviour {
 				//player.Money += enemy.MoneyDropped;
 				player.Experience += enemy.ExperienceWorth;
                 sounds.Sounds[2].Play();
+				if(Random.Range(1, 10) <= dropRate) {
+					DropHealth();
+				}
 				Destroy (gameObject);
 			}
 
@@ -186,6 +194,10 @@ public class EnemyBehavior : MonoBehaviour {
 		//newBullet.GetComponentInChildren<SpriteRenderer> ().color = Color.red;
 
 		bulletFired = false;
+	}
+
+	void DropHealth() {
+		Transform drop = Instantiate (healthPickUp, transform.position, Quaternion.Euler (Vector3.zero)) as Transform;
 	}
 
 	public float FreezeTimer {

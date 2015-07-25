@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GoToHub.cs" />
     <Compile Include="Assets\Scripts\GoToTeleporter.cs" />
+    <Compile Include="Assets\Scripts\HealthPickUp.cs" />
     <Compile Include="Assets\Scripts\Levels.cs" />
     <Compile Include="Assets\Scripts\PauseScript.cs" />
     <Compile Include="Assets\Scripts\PlayGame.cs" />

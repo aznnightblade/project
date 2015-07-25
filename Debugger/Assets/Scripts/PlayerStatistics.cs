@@ -137,6 +137,7 @@ public class PlayerStatistics : MonoBehaviour {
 	public int Defense { get { return defense; } }
 	public int Health { get { return health; } 
 		set { health = value; HandleHealth();} }
+	public int MaxHealth { get { return maxHealth; } }
 
     
 
