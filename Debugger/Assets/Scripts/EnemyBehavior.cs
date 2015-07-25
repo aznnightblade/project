@@ -174,9 +174,12 @@ public class EnemyBehavior : MonoBehaviour {
 		if (other.gameObject.tag == "Player") {
 			// Player takes damage
             PlayerStatistics player = other.gameObject.GetComponent<PlayerStatistics>();
-            int totalDamage = enemy.Damage - player.Defense;
-            player.Health -= totalDamage;
-            player.CalculateInvulerability(totalDamage);
+            if (player.HurtTimer <= 0.0f)
+            {
+                int totalDamage = enemy.Damage - player.Defense;
+                player.Health -= totalDamage;
+                player.CalculateInvulerability(totalDamage);
+            }
 		}
 	}
 

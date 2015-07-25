@@ -46,29 +46,34 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BackToMenu.cs" />
-     <Compile Include="Assets\Dialog.cs" />
-     <Compile Include="Assets\DoorScript.cs" />
-     <Compile Include="Assets\Levels.cs" />
-     <Compile Include="Assets\PlayGame.cs" />
+     <Compile Include="Assets\Scripts\BackToMenu.cs" />
      <Compile Include="Assets\Scripts\BossScript.cs" />
      <Compile Include="Assets\Scripts\BreakpointScript.cs" />
      <Compile Include="Assets\Scripts\BulletScript.cs" />
      <Compile Include="Assets\Scripts\CorruptionScript.cs" />
      <Compile Include="Assets\Scripts\DampenerScript.cs" />
+     <Compile Include="Assets\Scripts\Dialog.cs" />
+     <Compile Include="Assets\Scripts\DoorScript.cs" />
      <Compile Include="Assets\Scripts\EnemyBehavior.cs" />
      <Compile Include="Assets\Scripts\EnemyBulletScript.cs" />
      <Compile Include="Assets\Scripts\EnemyStatistics.cs" />
      <Compile Include="Assets\Scripts\FollowPlayer.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GoToHub.cs" />
      <Compile Include="Assets\Scripts\GoToTeleporter.cs" />
+     <Compile Include="Assets\Scripts\HealthPickUp.cs" />
+     <Compile Include="Assets\Scripts\Levels.cs" />
      <Compile Include="Assets\Scripts\PauseScript.cs" />
+     <Compile Include="Assets\Scripts\PlayGame.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\PlayerStatistics.cs" />
+     <Compile Include="Assets\Scripts\ShowInstructions.cs" />
+     <Compile Include="Assets\Scripts\ShowMessage.cs" />
+     <Compile Include="Assets\Scripts\Soundmanager.cs" />
      <Compile Include="Assets\Scripts\SpawnEnemies.cs" />
-     <Compile Include="Assets\ShowInstructions.cs" />
-     <Compile Include="Assets\Soundmanager.cs" />
-     <Compile Include="Assets\Tutorial.cs" />
+     <Compile Include="Assets\Scripts\Tutorial.cs" />
+     <Compile Include="Assets\Scripts\VictoryScript.cs" />
+     <Compile Include="Assets\Scripts\level1.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

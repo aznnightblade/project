@@ -81,9 +81,12 @@ public class BossScript : MonoBehaviour {
 	void OnCollisionEnter(Collision Col) {
 		if(Col.gameObject.tag == "Player" && hitPlayerTimer <= 0.0f) {
 			PlayerStatistics player = Col.gameObject.GetComponent<PlayerStatistics>();
-            int totalDamage = boss.Damage - player.Defense;
-            player.Health -= totalDamage;
-            player.CalculateInvulerability(totalDamage);
+            if (player.HurtTimer <= 0.0f)
+            {
+                int totalDamage = boss.Damage - player.Defense;
+                player.Health -= totalDamage;
+                player.CalculateInvulerability(totalDamage);
+            }
 		}
 	}
 }
