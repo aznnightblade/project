@@ -22,8 +22,7 @@ public class Levels : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player")
         {
-            Application.LoadLevel("Tutorial");
-            GameManager.tutorial = true;
+            Application.LoadLevel("NewTutorial");
         }
 
     }

@@ -90,7 +90,15 @@ public class PlayerStatistics : MonoBehaviour {
             
             if (GUILayout.Button("Restart"))
             {
-                Application.LoadLevel("TestEnvironment");
+                if (GameManager.tutorial==false)
+                {
+                    Application.LoadLevel("NewTutorial");
+                }
+                else if (GameManager.tutorial==true)
+                {
+                    Application.LoadLevel("TestEnvironment");
+                }
+                
             }
             if (GUILayout.Button("Quit"))
             {

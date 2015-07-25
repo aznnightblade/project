@@ -10,6 +10,7 @@ public class GoToHub : MonoBehaviour {
 	void OnTriggerEnter(Collider col)
 	{
 		Application.LoadLevel("HudWorld");
+        GameManager.tutorial = true;
 		
 	}
 	// Update is called once per frame
