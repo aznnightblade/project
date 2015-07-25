@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Soundmanager.cs" />
     <Compile Include="Assets\Scripts\SpawnEnemies.cs" />
     <Compile Include="Assets\Scripts\Tutorial.cs" />
+    <Compile Include="Assets\Scripts\VictoryScript.cs" />
     <Compile Include="Assets\Scripts\level1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />

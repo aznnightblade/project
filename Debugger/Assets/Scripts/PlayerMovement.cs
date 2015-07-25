@@ -176,8 +176,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FireBreakpoint() {
-		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		pos.y = gameObject.transform.position.y;
+        Vector3 pos = transform.position;
 
 		Transform newBreakpoint = Instantiate (breakpoint, pos, Quaternion.identity) as Transform;
 		newBreakpoint.tag = "Player Breakpoint";
