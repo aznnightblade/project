@@ -19,7 +19,7 @@ public class CorruptionScript : MonoBehaviour {
 			PlayerStatistics bulletOwner = col.gameObject.GetComponent<BulletScript>().Owner;
 
 			health -= Mathf.CeilToInt(bulletOwner.Damage + bulletOwner.Damage *(bulletOwner.ChargedDamageScale * (bulletScale - 1)));
-
+            sounds.Sounds[4].Play();
 			Destroy(col.gameObject);
 
 			if(health <= 0)

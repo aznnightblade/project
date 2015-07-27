@@ -21,7 +21,7 @@ public class DampenerScript : MonoBehaviour {
 			if(bulletScale >= bulletScaleToDamage && health > 0) {
 				PlayerStatistics bulletOwner = col.gameObject.GetComponent<BulletScript>().Owner;
 				health -= Mathf.CeilToInt (bulletOwner.Damage * ((bulletOwner.ChargedDamageScale - (bulletScaleToDamage - 1)) * (bulletScale - 1)));
-				
+                sounds.Sounds[4].Play();
 				if (health <= 0) {
 					destroyed = true;
                     sounds.Sounds[1].Play();
