@@ -36,11 +36,13 @@ public class PlayerMovement : MonoBehaviour {
 	bool breakpointFired = false;
 	float breakpointCooldown = 0.0f;
     public AudioSource shot;
+    public Soundmanager sound;
 	public Image visualCooldown;
     public Image ChargeMeter;
     float basechargescale = 1.0f;
 	// Use this for initialization
 	void Start () {
+        sound = GameObject.FindGameObjectWithTag("Sound Manager").GetComponent<Soundmanager>();
 		gameObject.GetComponent<Renderer>().material.color = Color.red;
 		gameObject.GetComponent<Rigidbody> ().maxAngularVelocity = Speed;
 		player = gameObject.GetComponent<PlayerStatistics> ();
@@ -58,10 +60,13 @@ public class PlayerMovement : MonoBehaviour {
 
 		// Checks to see if we are charging a shot
 		if (Input.GetButton("Fire2") && ChargeTimer <= 0.0f && !Input.GetButton("Fire1")) {
+            sound.Sounds[5].Play();
 			if(ChargeScale < 2.0f) {
+               
+               
                 ChargeScale += ChargeSpeed;
 				ChargeTimer = ChargeDelay - (ReductionPerAgility * player.Agility);
-
+                
 				if(ChargeScale > 2.0f)
 					ChargeScale = 2.0f;
 			}
@@ -171,7 +176,7 @@ public class PlayerMovement : MonoBehaviour {
 		newBullet.tag = "Player Bullet";
 		newBullet.localScale = newBullet.localScale * ChargeScale;
         shot.Play();
-	
+       // sound.Sounds[5].loop = false;
 		return;
 	}
 
