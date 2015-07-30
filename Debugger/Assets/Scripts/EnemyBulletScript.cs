@@ -13,13 +13,13 @@ public class EnemyBulletScript : MonoBehaviour {
 
 	[SerializeField]
 	float travelDistance = 100.0f;
-
+    public Soundmanager sounds;
 	// Use this for initialization
 	void Start () {
 		//owner = GameObject.FindGameObjectWithTag ("Enemy").GetComponent<EnemyStatistics> ();
 		startLocation = transform.position;
 		distance = travelDistance + 0.25f * owner.Dexterity;
-
+        sounds = GameObject.FindGameObjectWithTag("Sound Manager").GetComponent<Soundmanager>();
 		float degrees = transform.rotation.eulerAngles.y + 90.0f;
 		float radians = degrees * (Mathf.PI / 180.0f);
 		direction = new Vector3 (-Mathf.Cos (radians), Mathf.Sin (radians), 0.0f);
@@ -46,6 +46,7 @@ public class EnemyBulletScript : MonoBehaviour {
                 int totalDamage = owner.Damage - player.Defense;
                 player.Health -= totalDamage;
                 player.CalculateInvulerability(totalDamage);
+                sounds.Sounds[6].Play();
                 Destroy(gameObject);
             }
 		}

@@ -178,6 +178,7 @@ public class EnemyBehavior : MonoBehaviour {
             {
                 int totalDamage = enemy.Damage - player.Defense;
                 player.Health -= totalDamage;
+                sounds.Sounds[6].Play();
                 player.CalculateInvulerability(totalDamage);
             }
 		}
