@@ -28,7 +28,7 @@ public class BreakpointScript : MonoBehaviour {
 	void OnTriggerEnter(Collider col) {
 		if (gameObject.tag == "Player Breakpoint" && col.tag == "Enemy") {
 			col.gameObject.GetComponent<EnemyBehavior>().FreezeTimer = freezeTime;
-			Destroy(gameObject);
+			lifeSpan -= 1.5f;
 		}
 
 		if (gameObject.tag == "Enemy Breakpoint" && col.tag == "Player") {

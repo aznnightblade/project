@@ -17,10 +17,10 @@ public class DampenerScript : MonoBehaviour {
     }
 	void OnTriggerEnter(Collider col){
 		if (col.gameObject.tag == "Player Bullet") {
-			float bulletScale = col.gameObject.GetComponentInChildren<Transform>().localScale.x / 0.2f;
+			float bulletScale = col.transform.localScale.x / 0.5f;
 			if(bulletScale >= bulletScaleToDamage && health > 0) {
 				PlayerStatistics bulletOwner = col.gameObject.GetComponent<BulletScript>().Owner;
-				health -= Mathf.CeilToInt (bulletOwner.Damage * ((bulletOwner.ChargedDamageScale - (bulletScaleToDamage - 1)) * (bulletScale - 1)));
+				health -= Mathf.CeilToInt (bulletOwner.Damage * 3 * ((bulletOwner.ChargedDamageScale - (bulletScaleToDamage - 1)) * (bulletScale - 1)));
                 sounds.Sounds[4].Play();
 				if (health <= 0) {
 					destroyed = true;
